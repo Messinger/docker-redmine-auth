@@ -9,9 +9,7 @@ class AuthController < ApplicationController
     service=params[:service]
     scope=params[:scope]
 
-
-
-    render :json => {:token => generate_auth_token, :user => @current_user}
+    render :json => {:token => generate_auth_token, :expires_in => 3600, :issued_at => DateTime.now.iso8601}
 
   end
 
@@ -38,7 +36,7 @@ class AuthController < ApplicationController
     if blah.code == 200
       blah.body
     else
-      raise ForbiddenRequest.new
+      raise NotAuthenticated.new
     end
   end
 
