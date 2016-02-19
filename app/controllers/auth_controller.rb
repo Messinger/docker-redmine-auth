@@ -6,26 +6,21 @@ class AuthController < ApplicationController
 
   def index
 
+    warn params
     service=params[:service]
     scope=params[:scope]
-
-    render :json => {:token => generate_auth_token, :expires_in => 3600, :issued_at => DateTime.now.iso8601}
-
+    _token = generate_auth_token
+    warn _token
+    render :json => {:token => _token, :expires_in => 3600, :issued_at => DateTime.now.iso8601,:issuer => Setting.docker_issuer}, :status => :ok, :content_type => 'application/json; charset=utf-8'
   end
 
   private
 
   def authenticate
-
-    case request.format
-      when Mime::XML,Mime::JSON
-        if user = authenticate_with_http_basic { |u, p| redmine_authenticate(u, p) }
-          @current_user = user
-        else
-          request_http_basic_authentication
-        end
-      else
-        raise BadRequest
+    if user = authenticate_with_http_basic { |u, p| redmine_authenticate(u, p) }
+      @current_user = user
+    else
+      request_http_basic_authentication
     end
   end
 
@@ -34,15 +29,18 @@ class AuthController < ApplicationController
     blah = HTTParty.get("#{Setting.redmine_url}/users/current.json",:basic_auth => auth)
 
     if blah.code == 200
-      blah.body
+      JSON.parse(blah.body)['user']
     else
       raise NotAuthenticated.new
     end
   end
 
   def generate_auth_token
-    payload = { issuer: Setting.docker_issuer }
-    AuthToken.encode(payload,$ssl_key)
+    aud = ['push', 'pull']
+    jti_raw = [@current_user['api_key'], Time.now.to_i].join(':').to_s
+    #access = [{:type => 'registry', :actions => ['*'], :name => 'catalog'}]
+    payload = {:iss => Setting.docker_issuer, :exp =>  Time.now.to_i + 3600, :aud => aud}
+    AuthToken.encode(payload,$ssl_key,jti_raw)
   end
 
 end
