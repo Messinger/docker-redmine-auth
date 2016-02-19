@@ -41,8 +41,8 @@ class AuthController < ApplicationController
   end
 
   def generate_auth_token
-    payload = { user_id: @current_user['id'] }
-    AuthToken.encode(payload)
+    payload = { issuer: Setting.docker_issuer }
+    AuthToken.encode(payload,$ssl_key)
   end
 
 end

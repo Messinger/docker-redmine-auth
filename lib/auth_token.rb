@@ -2,13 +2,16 @@ require 'jwt'
 
 class AuthToken
 
-  def self.encode(payload, exp=3600.seconds.from_now)
+  # key is the whole key including public and private
+  def self.encode(payload, key, exp=3600.seconds.from_now)
+
     payload[:exp] = exp.to_i
-    JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    _token = JWT.encode(payload, key, 'RS256')
   end
 
-  def self.decode(token)
-    payload = JWT.decode(token, Rails.application.secrets.secret_key_base)[0]
+  # key is the PUBLIC key only
+  def self.decode(token,key)
+    payload = JWT.decode(token,key,true,{ :algorithm => 'RS256' })[0]
     DecodedAuthToken.new(payload)
   rescue
     nil # It will raise an error if it is not a token that was generated with our secret key or if the user changes the contents of the payload
