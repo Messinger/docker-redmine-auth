@@ -1,3 +1,15 @@
 redmine_url:
   default: https://localhost:3000
 
+docker_issuer:
+  default: dockerauth
+
+# ssl related
+ssl_private_key_passphrase:
+  default: ''
+
+ssl_private_key_file:
+  default: config/server.key
+
+ssl_public_crt_file:
+  default: config/server.crt
