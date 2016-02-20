@@ -1,12 +1,14 @@
 == README
 
-This software is in an realy early stage, means not complete working!
+This software is in an realy early stage.
+
+Working:
+
+* docker-registry authentication against a redmine installation
+
+* check access via repository pathes (push/pull allowed or not) or just login
 
 Planned:
-
-* authenticate against a redmine installation
-
-* check access via repository pathes (push/pull allowed or not)
 
 * a frontend for (Redmine-)Admin managing docker images
 
