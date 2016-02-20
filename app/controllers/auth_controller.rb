@@ -26,8 +26,7 @@ class AuthController < ApplicationController
   def generate_auth_token
     aud = Setting.service_name
     jti_raw = [@current_user.api_key, Time.now.to_i].join(':').to_s
-    access = generate_access
-    payload = {:iss => Setting.docker_issuer, :aud => aud, :access => [access]}
+    payload = {:iss => Setting.docker_issuer, :aud => aud}.merge generate_access
     debug payload
     AuthToken.encode(payload,$ssl_key,jti_raw,Setting.token_timeout.to_i.seconds.from_now)
   end
@@ -38,9 +37,7 @@ class AuthController < ApplicationController
     if _scope.blank? || _scope.length != 3
       {}
     else
-      _action = _scope[2].split(',')
-
-      {:type => _scope[0], :name => _scope[1], :actions => _action}
+      {:access => [{:type => _scope[0], :name => _scope[1], :actions => _scope[2].split(',')}]}
     end
   end
 
