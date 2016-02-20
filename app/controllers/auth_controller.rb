@@ -35,7 +35,7 @@ class AuthController < ApplicationController
   end
 
   def generate_auth_token
-    aud = 'Docker registry'
+    aud = Setting.service_name
     jti_raw = [@current_user['api_key'], Time.now.to_i].join(':').to_s
     #access = [{:type => 'registry', :actions => ['*'], :name => 'catalog'}]
     access = generate_access

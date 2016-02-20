@@ -1,6 +1,7 @@
 redmine_url:
   default: https://localhost:3000
 
+# must match docker registry config! (auth.token.issuer)
 docker_issuer:
   default: dockerauth
 
@@ -14,6 +15,12 @@ ssl_private_key_file:
 ssl_public_crt_file:
   default: config/server.crt
 
+# token related
+# timeout in seconds a token is valid
 token_timeout:
   type: int
   default: 30
+
+# must match docker registry config! (auth.token.service)
+service_name:
+  default: Docker registry
