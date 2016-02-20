@@ -31,12 +31,14 @@ class RedmineUser < PresentationModel
   def can_write? _project
     _m = find_membership_by_project _project
     return false if _m.blank?
+    return true if Setting.admin_users.include? self.login
     _m.repository_write_role? self
   end
 
   def can_read? _project
     _m = find_membership_by_project _project
     return false if _m.blank?
+    return true if Setting.admin_users.include? self.login
     _m.repository_read_role? self
   end
 
