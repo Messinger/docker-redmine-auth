@@ -8,13 +8,11 @@ class RedmineUser < PresentationModel
 
   def self.login _username, _password
     auth = {:username => _username, :password => _password}
-    blah = RedmineHttp.new('users',auth).find(:current)
+    _u = RedmineHttp.new('users',auth).find(:current)
 
-    if !blah.nil?
-      _u = blah['user']
+    if !_u.nil?
       _u['auth'] = auth
-      _user = RedmineUser.new({:data => _u})
-      _user
+      RedmineUser.new({:data => _u})
     else
       nil
     end
