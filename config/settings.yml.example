@@ -13,3 +13,7 @@ ssl_private_key_file:
 
 ssl_public_crt_file:
   default: config/server.crt
+
+token_timeout:
+  type: int
+  default: 30

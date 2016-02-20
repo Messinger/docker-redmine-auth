@@ -7,14 +7,10 @@ class AuthController < ApplicationController
 
   def index
 
-    warn params
+    debug params
     service=params[:service]
     scope=params[:scope]
-    _token = generate_auth_token
-    warn _token
-    res = {:token => _token, :expires_in => 60, :issuer => Setting.docker_issuer}
-    debug JSON::generate res
-    render :json => res, :status => :ok, :content_type => 'application/json; charset=utf-8'
+    render :json => {:token => generate_auth_token, :expires_in => Setting.token_timeout.to_i, :issuer => Setting.docker_issuer}, :status => :ok, :content_type => 'application/json; charset=utf-8'
   end
 
   private
@@ -42,8 +38,22 @@ class AuthController < ApplicationController
     aud = 'Docker registry'
     jti_raw = [@current_user['api_key'], Time.now.to_i].join(':').to_s
     #access = [{:type => 'registry', :actions => ['*'], :name => 'catalog'}]
-    payload = {:iss => Setting.docker_issuer, :exp =>  Time.now.to_i + 3600, :aud => aud}
-    AuthToken.encode(payload,$ssl_key,jti_raw)
+    access = generate_access
+    payload = {:iss => Setting.docker_issuer, :aud => aud, :access => [access]}
+    debug payload
+    AuthToken.encode(payload,$ssl_key,jti_raw,Setting.token_timeout.to_i.seconds.from_now)
+  end
+
+  # this moment without further checks!
+  def generate_access
+    _scope = params[:scope].split(':') unless params[:scope].blank?
+    if _scope.blank? || _scope.length != 3
+      {}
+    else
+      _action = _scope[2].split(',')
+
+      {:type => _scope[0], :name => _scope[1], :actions => _action}
+    end
   end
 
 end
