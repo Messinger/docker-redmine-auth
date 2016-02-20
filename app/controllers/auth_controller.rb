@@ -38,12 +38,19 @@ class AuthController < ApplicationController
       # login type - no access check needed
       {}
     else
-      names = _scope[1].split '/'
-      @redmine_project_id = names[0] unless names.blank?
-      unless @redmine_project_id.blank?
-        project = RedmineProject.find_by_identifier @redmine_project_id, @current_user
+      if Setting.full_access_check
+        _actions = []
+        names = _scope[1].split '/'
+        @redmine_project_id = names[0] unless names.blank?
+        unless @redmine_project_id.blank?
+          project = RedmineProject.find_by_identifier @redmine_project_id, @current_user
+          _actions << 'pull' if @current_user.can_read? project
+          _actions << 'push' if @current_user.can_write? project
+        end
+      else
+        _actions = _scope[2].split(',')
       end
-      {:access => [{:type => _scope[0], :name => _scope[1], :actions => _scope[2].split(',')}]}
+      {:access => [{:type => _scope[0], :name => _scope[1], :actions => _actions }]}
     end
   end
 
