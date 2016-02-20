@@ -19,6 +19,14 @@ class RedmineMembership  < PresentationModel
     {:project => project.to_hash, :roles => roles.map {|item| item.to_hash} }
   end
 
+  def repository_write_role? user
+    ! roles.find{|x| x.repository_write_role?(user)}.nil?
+  end
+
+  def repository_read_role? user
+    ! roles.find{|x| x.repository_read_role?(user)}.nil?
+  end
+
   private
 
   def gen_project
