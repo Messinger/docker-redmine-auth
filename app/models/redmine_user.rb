@@ -1,4 +1,5 @@
 require 'utils/attributes_accessor'
+require 'redmine_http'
 
 class RedmineUser < PresentationModel
   @@redmine_user_elements = %w[ id login firstname lastname mail created_on last_login api_key memberships groups auth ]
@@ -7,10 +8,10 @@ class RedmineUser < PresentationModel
 
   def self.login _username, _password
     auth = {:username => _username, :password => _password}
-    blah = HTTParty.get("#{Setting.redmine_url}/users/current.json?include=memberships,groups",:basic_auth => auth)
+    blah = RedmineHttp.new('users',auth).find(:current)
 
-    if !blah.nil? && blah.code == 200
-      _u = JSON.parse(blah.body)['user']
+    if !blah.nil?
+      _u = blah['user']
       _u['auth'] = auth
       _user = RedmineUser.new({:data => _u})
       _user
