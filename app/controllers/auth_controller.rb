@@ -23,17 +23,11 @@ class AuthController < ApplicationController
 
   def redmine_authenticate u, p
     auth = {:username => u, :password => p}
-    blah = HTTParty.get("#{Setting.redmine_url}/users/current.json",:basic_auth => auth)
+    blah = HTTParty.get("#{Setting.redmine_url}/users/current.json?include=memberships,groups",:basic_auth => auth)
 
     if blah.code == 200
       _u = JSON.parse(blah.body)['user']
       _u['auth'] = auth
-      if _u.key? 'id'
-        _pr = HTTParty.get("#{Setting.redmine_url}/users/#{_u['id']}.json?include=memberships,groups",:basic_auth => auth)
-        if _pr.code == 200
-          _u = JSON.parse(_pr.body)['user']
-        end
-      end
       _u
     else
       raise NotAuthenticated.new
