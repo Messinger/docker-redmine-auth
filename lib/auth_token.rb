@@ -8,6 +8,7 @@ class AuthToken
     jwk = key.public_key.to_jwk
     payload[:exp] = exp.to_i
     payload[:jti] = jti
+    payload[:nbf] = DateTime.now.to_i
     _token = JWT.encode(payload, key, 'RS256', {:jwk => jwk} )
   end
 

@@ -8,8 +8,6 @@ class AuthController < ApplicationController
   def index
 
     debug params
-    service=params[:service]
-    scope=params[:scope]
     render :json => {:token => generate_auth_token, :expires_in => Setting.token_timeout.to_i, :issuer => Setting.docker_issuer}, :status => :ok, :content_type => 'application/json; charset=utf-8'
   end
 
