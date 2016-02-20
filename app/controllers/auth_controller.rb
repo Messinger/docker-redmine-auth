@@ -26,7 +26,15 @@ class AuthController < ApplicationController
     blah = HTTParty.get("#{Setting.redmine_url}/users/current.json",:basic_auth => auth)
 
     if blah.code == 200
-      JSON.parse(blah.body)['user']
+      _u = JSON.parse(blah.body)['user']
+      _u['auth'] = auth
+      if _u.key? 'id'
+        _pr = HTTParty.get("#{Setting.redmine_url}/users/#{_u['id']}.json?include=memberships,groups",:basic_auth => auth)
+        if _pr.code == 200
+          _u = JSON.parse(_pr.body)['user']
+        end
+      end
+      _u
     else
       raise NotAuthenticated.new
     end
@@ -35,7 +43,6 @@ class AuthController < ApplicationController
   def generate_auth_token
     aud = Setting.service_name
     jti_raw = [@current_user['api_key'], Time.now.to_i].join(':').to_s
-    #access = [{:type => 'registry', :actions => ['*'], :name => 'catalog'}]
     access = generate_access
     payload = {:iss => Setting.docker_issuer, :aud => aud, :access => [access]}
     debug payload
