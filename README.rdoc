@@ -1,28 +1,16 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This software is in an realy early stage, means not complete working!
 
-Things you may want to cover:
+Planned:
 
-* Ruby version
+* authenticate against a redmine installation
 
-* System dependencies
+* check access via repository pathes (push/pull allowed or not)
 
-* Configuration
+* a frontend for (Redmine-)Admin managing docker images
 
-* Database creation
+and so on. 
 
-* Database initialization
+But first step: get basic auth fully working.
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
