@@ -1,4 +1,5 @@
 require 'auth_token'
+require 'json'
 
 class AuthController < ApplicationController
 
@@ -11,7 +12,9 @@ class AuthController < ApplicationController
     scope=params[:scope]
     _token = generate_auth_token
     warn _token
-    render :json => {:token => _token, :expires_in => 3600, :issued_at => DateTime.now.iso8601,:issuer => Setting.docker_issuer}, :status => :ok, :content_type => 'application/json; charset=utf-8'
+    res = {:token => _token, :expires_in => 60, :issuer => Setting.docker_issuer}
+    debug JSON::generate res
+    render :json => res, :status => :ok, :content_type => 'application/json; charset=utf-8'
   end
 
   private
@@ -36,7 +39,7 @@ class AuthController < ApplicationController
   end
 
   def generate_auth_token
-    aud = ['push', 'pull']
+    aud = 'Docker registry'
     jti_raw = [@current_user['api_key'], Time.now.to_i].join(':').to_s
     #access = [{:type => 'registry', :actions => ['*'], :name => 'catalog'}]
     payload = {:iss => Setting.docker_issuer, :exp =>  Time.now.to_i + 3600, :aud => aud}

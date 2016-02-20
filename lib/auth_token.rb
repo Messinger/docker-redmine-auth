@@ -5,10 +5,10 @@ class AuthToken
   # key is the whole key including public and private
   def self.encode(payload, key, jti_raw, exp=3600.seconds.from_now)
     jti = Digest::MD5.hexdigest(jti_raw)
-
+    jwk = key.public_key.to_jwk
     payload[:exp] = exp.to_i
     payload[:jti] = jti
-    _token = JWT.encode(payload, key, 'RS256')
+    _token = JWT.encode(payload, key, 'RS256', {:jwk => jwk} )
   end
 
   # key is the PUBLIC key only

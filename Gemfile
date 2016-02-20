@@ -42,3 +42,4 @@ gem 'spring',        group: :development
 gem 'httparty'
 gem 'logging-rails', :require => 'logging/rails'
 gem 'jwt'
+gem 'json-jwt'
