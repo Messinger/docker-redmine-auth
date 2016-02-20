@@ -18,9 +18,24 @@ ssl_public_crt_file:
 # token related
 # timeout in seconds a token is valid
 token_timeout:
-  type: int
+  format: int
   default: 30
 
 # must match docker registry config! (auth.token.service)
 service_name:
   default: Docker registry
+
+# if true, type 'catalog' may only used by admin,
+# if true and type repository, name must match redmine project id (the name) the user is member of
+# if project matches check if read (pull) and/or write (push) is allowed
+full_access_check:
+  format: bool
+  default: true
+
+# for access to redmine
+rest_proxy_host:
+  default:
+
+rest_proxy_port:
+  default:
+
