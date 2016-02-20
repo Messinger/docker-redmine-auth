@@ -1,8 +1,9 @@
 require 'utils/attributes_accessor'
 require 'redmine_http'
+require 'redmine_membership'
 
 class RedmineUser < PresentationModel
-  @@redmine_user_elements = %w[ id login firstname lastname mail created_on last_login api_key memberships groups auth ]
+  @@redmine_user_elements = %w[ id:int login firstname lastname mail created_on last_login api_key groups auth ]
 
   include AttributesAccessor
 
@@ -17,5 +18,23 @@ class RedmineUser < PresentationModel
       nil
     end
 
+  end
+
+  def memberships
+    @memberships ||= gen_memberships
+  end
+
+  def extra_hash
+    {:memberships => memberships.map {|item| item.to_hash }}
+  end
+
+  private
+
+  def gen_memberships
+    _ms = data['memberships']
+    return [] if _ms.blank?
+    _ms.map do |item|
+      RedmineMembership.new({:data => item })
+    end
   end
 end

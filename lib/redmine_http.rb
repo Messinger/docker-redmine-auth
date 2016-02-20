@@ -1,4 +1,5 @@
 require 'httparty'
+require 'rest_exceptions'
 
 # simple wrapper for httparty, in this project we just need GET aka find
 class RedmineHttp
@@ -8,6 +9,7 @@ class RedmineHttp
 
   STANDARD_HEADER = {'Accept' => 'application/json','Content-Type' => 'application/json; charset=UTF-8'}
 
+  # debug_output $stdout
   no_follow(true)
   base_uri Setting.redmine_url
 

@@ -35,8 +35,14 @@ class AuthController < ApplicationController
   def generate_access
     _scope = params[:scope].split(':') unless params[:scope].blank?
     if _scope.blank? || _scope.length != 3
+      # login type - no access check needed
       {}
     else
+      names = _scope[1].split '/'
+      @redmine_project_id = names[0] unless names.blank?
+      unless @redmine_project_id.blank?
+        project = RedmineProject.find_by_identifier @redmine_project_id, @current_user
+      end
       {:access => [{:type => _scope[0], :name => _scope[1], :actions => _scope[2].split(',')}]}
     end
   end
