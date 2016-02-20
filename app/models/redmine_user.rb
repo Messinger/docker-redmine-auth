@@ -8,7 +8,7 @@ class RedmineUser < PresentationModel
 
   def self.login _username, _password
     auth = {:username => _username, :password => _password}
-    _u = RedmineHttp.new('users',auth).find(:current)
+    _u = RedmineHttp.new('users',auth).find(:current,{:query => {:include=>'memberships'}})
 
     if !_u.nil?
       _u['auth'] = auth
