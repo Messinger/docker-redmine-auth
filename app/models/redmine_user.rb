@@ -28,6 +28,22 @@ class RedmineUser < PresentationModel
     {:memberships => memberships.map {|item| item.to_hash }}
   end
 
+  def can_write? _project
+    _m = find_membership_by_project _project
+    return false if _m.blank?
+    _m.repository_write_role? self
+  end
+
+  def can_read? _project
+    _m = find_membership_by_project _project
+    return false if _m.blank?
+    _m.repository_read_role? self
+  end
+
+  def find_membership_by_project _project
+    memberships.find{|x| x.project.id == _project.id} unless _project.blank?
+  end
+
   private
 
   def gen_memberships
