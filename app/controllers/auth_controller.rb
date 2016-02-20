@@ -14,29 +14,18 @@ class AuthController < ApplicationController
   private
 
   def authenticate
-    if user = authenticate_with_http_basic { |u, p| redmine_authenticate(u, p) }
+    if user = authenticate_with_http_basic { |u, p| RedmineUser.login(u, p) }
+      raise NotAuthenticated.new if user.nil?
+      debug user.to_hash
       @current_user = user
     else
       request_http_basic_authentication
     end
   end
 
-  def redmine_authenticate u, p
-    auth = {:username => u, :password => p}
-    blah = HTTParty.get("#{Setting.redmine_url}/users/current.json?include=memberships,groups",:basic_auth => auth)
-
-    if blah.code == 200
-      _u = JSON.parse(blah.body)['user']
-      _u['auth'] = auth
-      _u
-    else
-      raise NotAuthenticated.new
-    end
-  end
-
   def generate_auth_token
     aud = Setting.service_name
-    jti_raw = [@current_user['api_key'], Time.now.to_i].join(':').to_s
+    jti_raw = [@current_user.api_key, Time.now.to_i].join(':').to_s
     access = generate_access
     payload = {:iss => Setting.docker_issuer, :aud => aud, :access => [access]}
     debug payload
