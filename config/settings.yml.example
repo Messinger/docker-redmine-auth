@@ -2,6 +2,7 @@ redmine_url:
   default: https://localhost:3000
 
 # must match docker registry config! (auth.token.issuer)
+# and the issuer of ssl certifcates
 docker_issuer:
   default: dockerauth
 
@@ -28,9 +29,14 @@ service_name:
 # if true, type 'catalog' may only used by admin,
 # if true and type repository, name must match redmine project id (the name) the user is member of
 # if project matches check if read (pull) and/or write (push) is allowed
+# pull is redmine access browse_repository, push is commit_access
 full_access_check:
   format: bool
   default: true
+
+admin_users:
+  default:
+    - admin
 
 # for access to redmine
 rest_proxy_host:
