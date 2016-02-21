@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
 
   def initialize
-    @logger = getlogger("Ngccs::ApplicationController::#{self.class.logger_name}")
+    @logger = getlogger("ApplicationController::#{self.class.logger_name}")
     super
   end
 
