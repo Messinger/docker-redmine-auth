@@ -1,0 +1,8 @@
+*/temp*
+*/config/settings.yml
+*/.git*
+**/*.crt
+**/*.csr
+**/*.key
+**/docker-compose.yml
+Dockerfile
