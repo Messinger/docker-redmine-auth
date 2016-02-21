@@ -29,21 +29,26 @@ class RedmineUser < PresentationModel
   end
 
   def can_write? _project
-    _m = find_membership_by_project _project
-    return false if _m.blank?
     return true if Setting.admin_users.include? self.login
-    _m.repository_write_role? self
+    _m = find_memberships_by_project _project
+    return false if _m.blank?
+    !_m.find{|x| x.repository_write_role?(self)}.blank?
   end
 
   def can_read? _project
-    _m = find_membership_by_project _project
-    return false if _m.blank?
     return true if Setting.admin_users.include? self.login
-    _m.repository_read_role? self
+
+    _m = find_memberships_by_project _project
+    return false if _m.blank?
+    !_m.find{|x| x.repository_read_role?(self)}.blank?
   end
 
   def find_membership_by_project _project
     memberships.find{|x| x.project.id == _project.id} unless _project.blank?
+  end
+
+  def find_memberships_by_project _project
+    memberships.select{|x| x.project.id == _project.id} unless _project.blank?
   end
 
   private
