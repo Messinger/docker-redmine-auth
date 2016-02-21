@@ -6,7 +6,7 @@
 # for now following exceptions are implemented:
 # * HttpExceptions::BadRequest
 # * HttpExceptions::NotFound
-# * HttpExceptions::NotAuthenticated
+# * HttpExceptions::Unauthorized
 # * HttpExceptions::ForbiddenRequest
 # * HttpExceptions::NotAcceptable
 # * HttpExceptions::RequestTimedout
@@ -70,13 +70,13 @@ module HttpExceptions
   #
   # == HTTP status codes
   # <tt>401</tt>
-  class NotAuthenticated < RequestException
+  class Unauthorized < RequestException
     # Initialize the Exception
     #
     # * *Args*
     #   [message] A message which replaces the default message
     def initialize(message = nil)
-      super I18n.t('exceptions.not_authenticated'),message,:unauthorized
+      super I18n.t('exceptions.unauthorized'),message,:unauthorized
     end
   end
 

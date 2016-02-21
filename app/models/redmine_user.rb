@@ -15,7 +15,7 @@ class RedmineUser < PresentationModel
       _u['auth'] = auth
       RedmineUser.new({:data => _u})
     else
-      nil
+      raise Unauthorized.new
     end
 
   end

@@ -14,13 +14,19 @@ class AuthController < ApplicationController
   private
 
   def authenticate
-    if user = authenticate_with_http_basic { |u, p| RedmineUser.login(u, p) }
-      raise NotAuthenticated.new if user.nil?
-      debug user.to_hash
-      @current_user = user
-    else
-      request_http_basic_authentication
+    begin
+      if user = authenticate_with_http_basic { |u, p| RedmineUser.login(u, p) }
+        raise Unauthorized.new if user.nil?
+        debug user.to_hash
+        @current_user = user
+      else
+        request_http_basic_authentication
+      end
+    rescue => ex
+      @current_user=nil
+      raise Unauthorized.new
     end
+
   end
 
   def generate_auth_token
