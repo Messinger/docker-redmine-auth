@@ -77,16 +77,12 @@ class RedmineHttp
       response = self.class.get("#{@resource_uri}#{_id}" , options)
     rescue HTTParty::RedirectionTooDeep => e
       error e
-      response = e
+      response = nil
     rescue => e
       error e
       raise e
     end
-    if !response.nil? && response.code == 200
-      JSON.parse(response.body)
-    else
-      nil
-    end
+    JSON.parse(response.body) if !response.nil? && response.code == 200
   end
 
 
