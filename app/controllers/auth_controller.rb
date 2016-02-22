@@ -14,17 +14,12 @@ class AuthController < ApplicationController
   private
 
   def authenticate
-    begin
-      if user = authenticate_with_http_basic { |u, p| RedmineUser.login(u, p) }
-        raise Unauthorized.new if user.nil?
-        debug user.to_hash
-        @current_user = user
-      else
-        request_http_basic_authentication
-      end
-    rescue => ex
-      @current_user=nil
-      raise Unauthorized.new
+
+    if user = authenticate_with_http_basic { |u, p| RedmineUser.login(u, p) }
+      @current_user = user
+      debug @current_user
+    else
+      request_http_basic_authentication
     end
 
   end
@@ -45,8 +40,8 @@ class AuthController < ApplicationController
       {}
     else
       _actions = _scope[2].split(',')
+      _temp_actions = []
       if Setting.full_access_check
-        _temp_actions = []
         names = _scope[1].split '/'
         @redmine_project_id = names[0] unless names.blank?
         # catalog is a special case for admins
@@ -61,7 +56,13 @@ class AuthController < ApplicationController
             _temp_actions << 'push' if @current_user.can_write? project
           end
         end
-        _actions = _temp_actions
+        if @redmine_project_id == 'catalog'
+          _actions = ['*']
+        else
+          _actions = ['push','pull']
+        end
+      else
+
       end
       {:access => [{:type => _scope[0], :name => _scope[1], :actions => _actions }]}
     end
