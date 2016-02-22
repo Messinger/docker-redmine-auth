@@ -111,6 +111,3 @@ DEPENDENCIES
   rails (= 4.1.0)
   sdoc (~> 0.4.0)
   sqlite3
-
-BUNDLED WITH
-   1.11.2
