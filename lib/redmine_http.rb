@@ -1,5 +1,6 @@
 require 'httparty'
 require 'rest_exceptions'
+require 'kuxdo'
 
 # simple wrapper for httparty, in this project we just need GET aka find
 class RedmineHttp
@@ -16,6 +17,8 @@ class RedmineHttp
   def initialize(resource_uri, authentication={username: nil, password: nil })
     raise(ArgumentError, "Authentication not a Hash") unless authentication.is_a?(Hash)
     raise(ArgumentError, "Resource_uri not a String") unless resource_uri.is_a?(String)
+
+    @logger = Kuxdo::getlogger("#{self.class.logger_name}")
 
     unless Setting.rest_proxy_host.blank?
       proxy_port = Setting.rest_proxy_port.blank? ? nil : Setting.rest_proxy_port
@@ -73,15 +76,13 @@ class RedmineHttp
       end
       response = self.class.get("#{@resource_uri}#{_id}" , options)
     rescue HTTParty::RedirectionTooDeep => e
-      response = e
+      error e
+      response = nil
     rescue => e
+      error e
       raise e
     end
-    if !response.nil? && response.code == 200
-      JSON.parse(response.body)
-    else
-      nil
-    end
+    JSON.parse(response.body) if !response.nil? && response.code == 200
   end
 
 

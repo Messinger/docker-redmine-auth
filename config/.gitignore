@@ -1,5 +1,4 @@
 settings.yml
-logging.yml
 /server.crt
 /server.csr
 /server.key

@@ -1,8 +1,8 @@
 FROM ruby:alpine
 MAINTAINER Rajko Albrecht
 ENV BUILD_PACKAGES="curl-dev ruby-dev build-base" \
-    DEV_PACKAGES="zlib-dev libxml2-dev libxslt-dev tzdata sqlite-dev yaml-dev" \
-    RUBY_PACKAGES="ruby ruby-io-console ruby-json yaml nodejs"
+    DEV_PACKAGES="zlib-dev libxml2-dev libxslt-dev tzdata sqlite-dev yaml-dev libstdc++" \
+    RUBY_PACKAGES="ruby ruby-io-console ruby-json yaml nodejs linux-headers"
 ENV APP_HOME=/srv/docker-redmine-auth \
     RAILS_ENV=production
 

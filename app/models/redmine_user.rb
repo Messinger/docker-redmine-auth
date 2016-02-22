@@ -1,6 +1,7 @@
 require 'utils/attributes_accessor'
 require 'redmine_http'
 require 'redmine_membership'
+require 'http_exceptions'
 
 class RedmineUser < PresentationModel
   @@redmine_user_elements = %w[ id:int login firstname lastname mail created_on last_login api_key groups auth ]
@@ -15,7 +16,7 @@ class RedmineUser < PresentationModel
       _u['auth'] = auth
       RedmineUser.new({:data => _u})
     else
-      raise Unauthorized.new
+      raise HttpExceptions::Unauthorized.new
     end
 
   end
