@@ -83,7 +83,7 @@ Rails.application.configure do
 
   if ENV.key? 'PRODUCTION_TO_STDOUT'
     config.log_to=['stdout']
-    config.log_level = :debug
+    config.log_level = :info
   else
     config.log_to=['file']
   end
