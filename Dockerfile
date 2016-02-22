@@ -25,4 +25,9 @@ COPY . $APP_HOME
 
 RUN bundle install --no-cache && rake db:migrate
 
-CMD $APP_HOME/bin/rails s
+EXPOSE 3000
+
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
