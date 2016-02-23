@@ -118,6 +118,3 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   sqlite3
   unicorn
-
-BUNDLED WITH
-   1.11.2
