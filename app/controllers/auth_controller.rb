@@ -42,15 +42,13 @@ class AuthController < ApplicationController
     else
       _actions = _scope[2].split(',')
 
-      if Setting.full_access_check
+      if Setting.full_access_check && !Setting.admin_users.include?(@current_user.login)
         _temp_actions = []
         names = _scope[1].split '/'
         @redmine_project_id = names[0] unless names.blank?
         # catalog is a special case for admins
         if @redmine_project_id == 'catalog'
-          if Setting.admin_users.include? @current_user.login
-            _temp_actions << '*'
-          end
+          #_temp_actions << '*'
         else
           unless @redmine_project_id.blank?
             project = RedmineProject.find_by_identifier @redmine_project_id, @current_user
@@ -61,7 +59,7 @@ class AuthController < ApplicationController
         _actions = _temp_actions
       else
         # ensure r/w rights, sometimes registry is confused when giving just 'pull'
-        _actions = ['pull','push'] if _actions.include? 'push'
+        _actions = ['pull','push'] if _actions.include? 'pull'
       end
       {:access => [{:type => _scope[0], :name => _scope[1], :actions => _actions }]}
     end
