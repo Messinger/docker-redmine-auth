@@ -15,7 +15,7 @@ class AuthController < ApplicationController
 
   def authenticate
 
-    if user = authenticate_with_http_basic { |u, p| Redmine::RedmineUser.login(u, p) }
+    if user = authenticate_with_http_basic { |u, p| Redmine::User.login(u, p) }
       @current_user = user
       debug @current_user.as_json(:except => ['auth'])
     else
