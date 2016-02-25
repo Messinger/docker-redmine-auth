@@ -27,7 +27,7 @@ class RedmineHttp
     @auth = {}
 
     if ! authentication[:apitoken].blank?
-      @auth = authentication
+      @auth = {:username => authentication[:apitoken], :password => (0...50).map { ('a'..'z').to_a[rand(26)] }.join}
     else
       unless authentication[:username].blank?
         @auth = {:username => authentication[:username]}

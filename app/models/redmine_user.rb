@@ -13,7 +13,11 @@ class RedmineUser < UserPresentationModel
     _u = RedmineHttp.new('users',auth).find(:current,{:query => {:include=>'memberships'}})
 
     if !_u.nil?
-      _u['auth'] = auth
+      if _u['api_key'].blank?
+        _u['auth'] = auth
+      else
+        _u['auth'] = {:apitoken => _u['api_key']}
+      end
       RedmineUser.new({:data => _u})
     else
       raise HttpExceptions::Unauthorized.new
