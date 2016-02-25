@@ -1,7 +1,10 @@
 # config/unicorn.rb
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
-timeout 15
-preload_app true
+
+rails_env = ENV['RAILS_ENV'] || 'production'
+
+timeout (rails_env == 'production' ? 15 : 1500)
+preload_app (rails_env == 'production' ? true : false)
 
 listen 3000
 listen '[::]:3000', :ipv6only => true
