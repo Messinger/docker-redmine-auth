@@ -52,8 +52,12 @@ class AuthController < ApplicationController
         else
           unless @redmine_project_id.blank?
             project = RedmineProject.find_by_identifier @redmine_project_id, @current_user
-            _temp_actions << 'pull' if @current_user.can_read? project
-            _temp_actions << 'push' if @current_user.can_write? project
+            if _actions.include? '*'
+              _temp_actions << '*' if @current_user.can_read?(project) && @current_user.can_write?(project)
+            else
+              _temp_actions << 'pull' if @current_user.can_read? project
+              _temp_actions << 'push' if @current_user.can_write? project
+            end
           end
         end
         _actions = _temp_actions
