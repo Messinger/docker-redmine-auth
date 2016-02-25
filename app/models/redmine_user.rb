@@ -3,7 +3,7 @@ require 'redmine_http'
 require 'redmine_membership'
 require 'http_exceptions'
 
-class RedmineUser < PresentationModel
+class RedmineUser < UserPresentationModel
   @@redmine_user_elements = %w[ id:int login firstname lastname mail created_on last_login api_key groups auth ]
 
   include AttributesAccessor
