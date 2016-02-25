@@ -46,9 +46,8 @@ class AuthController < ApplicationController
         _temp_actions = []
         names = _scope[1].split '/'
         @redmine_project_id = names[0] unless names.blank?
-        # catalog is a special case for admins
-        if @redmine_project_id == 'catalog'
-          #_temp_actions << '*'
+        if @redmine_project_id == 'catalog' && _scope[0]=='registry'
+          _temp_actions << '*'
         else
           unless @redmine_project_id.blank?
             project = RedmineProject.find_by_identifier @redmine_project_id, @current_user
