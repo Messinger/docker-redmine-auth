@@ -3,7 +3,7 @@
 module AttributesAccessor
  
   def self.included(base)
-    element_variables = "@@#{base.name.underscore}_elements"    
+    element_variables = "@@class_attributes_elements"
     _elements = base.class_variable_get(element_variables)
     elements = []
     _elements.each do |_element|
