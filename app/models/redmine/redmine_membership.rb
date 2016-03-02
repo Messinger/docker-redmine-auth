@@ -17,8 +17,8 @@ module Redmine
       @roles ||= gen_roles
     end
 
-    def extra_hash
-      {:project => project.to_hash, :roles => roles.map {|item| item.to_hash} }
+    def extra_hash options = {}
+      {:project => project.to_hash(options), :roles => roles.map {|item| item.to_hash(options)} }
     end
 
     def repository_write_role? user

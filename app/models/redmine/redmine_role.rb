@@ -11,7 +11,7 @@ module Redmine
       @permissions ||= gen_permissions
     end
 
-    def extra_hash
+    def extra_hash options = {}
       {:permissions => permissions}
     end
 

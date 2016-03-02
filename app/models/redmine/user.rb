@@ -31,8 +31,8 @@ module Redmine
       @memberships ||= gen_memberships
     end
 
-    def extra_hash
-      {:memberships => memberships.map {|item| item.to_hash }}
+    def extra_hash options = {}
+      {:memberships => memberships.map {|item| item.to_hash(options) }}
     end
 
     def can_write? _project

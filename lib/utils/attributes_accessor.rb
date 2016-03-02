@@ -42,18 +42,26 @@ module AttributesAccessor
     end
 
 
-    base.send(:define_method,"to_hash") do
+    base.send(:define_method,"to_hash") do |options = {}|
+#      _l = Logging.logger[self]
+#      _l.debug "#{options}"
+      _exclude = options[:exclude] || []
+      unless _exclude.kind_of? Array
+        _exclude = [_exclude]
+      end
+
       if self.respond_to?(:extra_hash)
-        _e = extra_hash
+        _e = extra_hash options
       else
         _e = {}
       end
       if base.superclass.instance_methods.include?(:to_hash)
-        _s = super()
+        _s = super(options)
       else
         _s = {}
       end
-      _s.merge(Hash[*(elements.map{ |element| [element.underscore.to_sym,eval(element.underscore)] }).flatten ].merge(_e))
+      _el = elements.map{|element| element.underscore}
+      _s.merge(Hash[*(_el.select{|element| !_exclude.include?(element.to_sym)}.map{ |element| [element.to_sym,eval(element)] }).flatten ].merge(_e))
     end
   end
 
