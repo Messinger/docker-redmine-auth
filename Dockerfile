@@ -17,14 +17,14 @@ RUN apk --update --upgrade add $BUILD_PACKAGES $RUBY_PACKAGES $DEV_PACKAGES && \
     bundle config --global build.nokogiri  "--use-system-libraries" && \
     bundle config --global build.nokogumbo "--use-system-libraries" && \
     find / -type f -iname \*.apk-new -delete && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* && \
     rm -rf /usr/lib/lib/ruby/gems/*/cache/* && \
     rm -rf ~/.gem
 
 COPY . $APP_HOME
 
 RUN bundle install --no-cache && rake db:migrate &&\
-    apk --update --upgrade del $BUILD_PACKAGES &&\
+    apk --update --upgrade del $BUILD_PACKAGES 
 
 
 EXPOSE 3000
