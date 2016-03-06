@@ -14,17 +14,12 @@ class AuthController < ApplicationController
   private
 
   def authenticate
-    begin
-      if user = authenticate_with_http_basic { |u, p| RedmineUser.login(u, p) }
-        raise Unauthorized.new if user.nil?
-        debug user.to_hash
-        @current_user = user
-      else
-        request_http_basic_authentication
-      end
-    rescue => ex
-      @current_user=nil
-      raise Unauthorized.new
+
+    if user = authenticate_with_http_basic { |u, p| Redmine::User.login(u, p) }
+      @current_user = user
+      debug @current_user.as_json(:except => ['auth'])
+    else
+      request_http_basic_authentication
     end
 
   end
@@ -39,29 +34,35 @@ class AuthController < ApplicationController
 
   # this moment without further checks!
   def generate_access
-    _scope = params[:scope].split(':') unless params[:scope].blank?
+    return {} unless params.key? :scope
+    _scope = params[:scope].split(':')
     if _scope.blank? || _scope.length != 3
-      # login type - no access check needed
+      # login type / ping - no access check needed
       {}
     else
       _actions = _scope[2].split(',')
-      if Setting.full_access_check
+
+      if Setting.full_access_check && !Setting.admin_users.include?(@current_user.login)
         _temp_actions = []
         names = _scope[1].split '/'
         @redmine_project_id = names[0] unless names.blank?
-        # catalog is a special case for admins
-        if @redmine_project_id == 'catalog'
-          if Setting.admin_users.include? @current_user.login
-            _temp_actions << '*'
-          end
+        if @redmine_project_id == 'catalog' && _scope[0]=='registry'
+          _temp_actions << '*'
         else
           unless @redmine_project_id.blank?
-            project = RedmineProject.find_by_identifier @redmine_project_id, @current_user
-            _temp_actions << 'pull' if @current_user.can_read? project
-            _temp_actions << 'push' if @current_user.can_write? project
+            project = Redmine::RedmineProject.find_by_identifier @redmine_project_id, @current_user
+            if _actions.include? '*'
+              _temp_actions << '*' if @current_user.can_read?(project) && @current_user.can_write?(project)
+            else
+              _temp_actions << 'pull' if @current_user.can_read? project
+              _temp_actions << 'push' if @current_user.can_write? project
+            end
           end
         end
         _actions = _temp_actions
+      else
+        # ensure r/w rights, sometimes registry is confused when giving just 'pull'
+        _actions = ['pull','push'] if _actions.include? 'pull'
       end
       {:access => [{:type => _scope[0], :name => _scope[1], :actions => _actions }]}
     end

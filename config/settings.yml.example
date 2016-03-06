@@ -20,7 +20,7 @@ ssl_public_crt_file:
 # timeout in seconds a token is valid
 token_timeout:
   format: int
-  default: 30
+  default: 1200
 
 # must match docker registry config! (auth.token.service)
 service_name:

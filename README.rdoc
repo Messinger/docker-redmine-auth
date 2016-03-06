@@ -1,7 +1,5 @@
 == README
 
-This software is in an realy early stage.
-
 Working:
 
 * docker-registry authentication against a redmine installation
@@ -14,7 +12,7 @@ Planned:
 
 and so on. 
 
-But first step: get basic auth fully working.
+Details about configuration etc see in wiki https://github.com/Messinger/docker-redmine-auth/wiki
 
 == License
 
