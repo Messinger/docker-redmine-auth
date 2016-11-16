@@ -58,6 +58,10 @@ module Redmine
       memberships.select{|x| x.project.id == _project.id} unless _project.blank?
     end
 
+    def find_project_by_identifier _identifier
+      Redmine::RedmineProject.find_by_identifier _identifier, self
+    end
+
     private
 
     def gen_memberships
