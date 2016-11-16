@@ -5,7 +5,7 @@ require 'http_exceptions'
 require 'user_presentation_model'
 
 module Redmine
-  class User < UserPresentationModel
+  class RedmineUser < UserPresentationModel
     @@class_attributes_elements = %w[ id:int login firstname lastname mail created_on last_login api_key groups auth ]
 
     include AttributesAccessor
@@ -20,7 +20,7 @@ module Redmine
         else
           _u['auth'] = {:apitoken => _u['api_key']}
         end
-        User.new({:data => _u})
+        RedmineUser.new({:data => _u})
       else
         raise HttpExceptions::Unauthorized.new
       end
