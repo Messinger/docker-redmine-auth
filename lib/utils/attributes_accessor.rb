@@ -28,7 +28,7 @@ module AttributesAccessor
         if _method.nil?
           instance_variable_set(_v,data["#{element}"].blank? ? nil : data["#{element}"]) unless base.instance_variable_defined?(_v)
         else
-          instance_variable_set(_v,data["#{element}"].blank? ? nil : data["#{element}"].send(_method)) unless base.instance_variable_defined?(_v)
+          instance_variable_set(_v,data["#{element}"].nil? ? nil : data["#{element}"].send(_method)) unless base.instance_variable_defined?(_v)
         end
         instance_variable_get(_v)
       end
