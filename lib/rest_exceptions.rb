@@ -25,43 +25,43 @@ module RestExceptions
   end
 
   class RestUnauthorizedException < RestException
-    def initialize(message, rest_params)
+    def initialize(message)
       super(message||I18n.t('exceptions.unauthorized'),:unauthorized)
     end
   end
 
   class RestForbiddenException < RestException
-    def initialize(message, rest_params)
+    def initialize(message)
       super(message||I18n.t('exceptions.forbidden'),:forbidden)
     end
   end
 
   class RestUnprocessableException < RestException
-    def initialize(message, rest_params)
+    def initialize(message)
       super(message,:unprocessable_entity)
     end
   end
 
   class RestConflictException < RestException
-    def initialize(message, rest_params)
+    def initialize(message)
       super(message,:conflict)
     end
   end
 
   class RestBadRequestException < RestException
-    def initialize(message, rest_params)
+    def initialize(message)
       super(message,:bad_request)
     end
   end
 
   class RestServerErrorException < RestException
-    def initialize(message, rest_params)
+    def initialize(message)
       super(message,500)
     end
   end
 
   class RestServiceUnavailableException < RestException
-    def initialize(message, rest_params)
+    def initialize(message)
       super(message,503)
     end
   end
