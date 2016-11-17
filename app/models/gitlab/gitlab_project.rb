@@ -8,7 +8,7 @@ module Gitlab
 
 
     def safe_name_with_namespace
-      @safe_name_with_namespace ||= name_with_namespace.parameterize
+      @safe_name_with_namespace ||= gen_safe_name
     end
 
     def safe_name
@@ -27,6 +27,10 @@ module Gitlab
     
     def gen_safe_path
       path_with_namespace.split('/').map { |s| s.parameterize }.join('/')
+    end
+
+    def gen_safe_name
+      name_with_namespace.split('/').map { |s| s.parameterize }.join('/')
     end
   end
 end

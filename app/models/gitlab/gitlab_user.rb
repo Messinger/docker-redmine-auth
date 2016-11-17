@@ -27,6 +27,13 @@ module Gitlab
       privat_token
     end
 
+    # identifier is the path! even the last part or the full path
+    # identifier may even secured (eg, string.parameterize) form or url form
+    # first match wins
+    def find_project_by_identifier identifier
+      projects.find{|x|  [x.safe_path_with_namespace,x.path_with_namespace, x.safe_name_with_namespace].include? identifier}
+    end
+
     def projects
       @projects ||= retrieve_projects
     end
