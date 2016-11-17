@@ -48,3 +48,7 @@ rest_proxy_host:
 rest_proxy_port:
   default:
 
+auth_modules:
+  default:
+    - redmine
+    - gitlab
