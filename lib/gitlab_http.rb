@@ -44,6 +44,37 @@ class GitlabHttp
     begin
       response = self.class.post(@resource_uri,options)
     rescue HTTParty::RedirectionTooDeep => e
+      error es
+s
+      response = nil
+    rescue => e
+      error e
+      raise e
+    end
+
+
+    result = JSON.parse(response.body)
+
+    if response.code > 399
+      raise_rest result[:message],response.code
+    end
+
+    result
+
+  end
+
+  def retrieve id = nil,options = {}
+    options.merge!({:headers => @headers })
+
+    if id.blank?
+      _id = ''
+    else
+      _id = "/#{id}"
+    end
+
+    begin
+      response = self.class.get("#{@resource_uri}#{_id}",options)
+    rescue HTTParty::RedirectionTooDeep => e
       error e
       response = nil
     rescue => e
@@ -52,7 +83,6 @@ class GitlabHttp
     end
 
     result = JSON.parse(response.body)
-
     if response.code > 399
       raise_rest result[:message],response.code
     end
