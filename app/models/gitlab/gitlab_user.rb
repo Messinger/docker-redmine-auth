@@ -1,18 +1,14 @@
-require 'utils/attributes_accessor'
 require 'gitlab_http'
 require 'http_exceptions'
 require 'user_presentation_model'
 
 module Gitlab
   class GitlabUser < UserPresentationModel
-    @@class_attributes_elements = %w[ name username id state avatar_url web_url is_admin:bool extern:bool private_token ]
-    include AttributesAccessor
-
     def self.login _username, _password
 
       begin
         _u = GitlabHttp.new('session').create({:login => _username, :password => _password})
-        GitlabUser.new({:data => _u})
+        GitlabUser.new(_u)
       rescue HttpExceptions::RequestException => e
         raise HttpExceptions::Unauthorized.new
       end
@@ -27,6 +23,10 @@ module Gitlab
       privat_token
     end
 
+    def extra_hash options = {}
+      {:projects => projects.map {|item| item.to_hash(options) }}
+    end
+
     # identifier is the path! even the last part or the full path
     # identifier may even secured (eg, string.parameterize) form or url form
     # first match wins
@@ -38,6 +38,16 @@ module Gitlab
       @projects ||= retrieve_projects
     end
 
+    # ensure that project is kind of GitlabProject or identifier
+    def can_write? _project
+      return true if Setting.admin_users.include? self.username
+    end
+
+    # ensure that project is kind of GitlabProject or identifier
+    def can_read? _project
+      return true if Setting.admin_users.include? self.username
+    end
+
     private
 
     def retrieve_projects
@@ -47,7 +57,7 @@ module Gitlab
         _r = GitlabHttp.new('projects',authtoken).retrieve('visible')
 
         projects = _r.map do |rp|
-          Gitlab::GitlabProject.new({:data => rp})
+          Gitlab::GitlabProject.new(rp)
         end
 
       rescue HttpExceptions::RequestException => e

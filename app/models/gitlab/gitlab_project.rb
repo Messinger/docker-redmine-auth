@@ -1,11 +1,5 @@
-require 'utils/attributes_accessor'
-
 module Gitlab
   class GitlabProject  < PresentationModel
-    @@class_attributes_elements = %w[ id visibility_level name name_with_namespace path path_with_namespace ]
-
-    include AttributesAccessor
-
 
     def safe_name_with_namespace
       @safe_name_with_namespace ||= gen_safe_name
@@ -21,6 +15,15 @@ module Gitlab
 
     def safe_path
       @safe_path ||= path.parameterize
+    end
+
+    def retrieve_permissions user
+      begin
+        res = GitlabHttp.new("projects/#{self.id}/members",user.authtoken).retrieve user.id
+        OpenStruct.new(res)
+      rescue => ex
+        {}
+      end
     end
 
     private
