@@ -1,18 +1,21 @@
-class PresentationModel
+require 'ostruct'
 
-  # Generic initialization method to init Instances with every instance attribute
-  def initialize(*h)
-    if h.length == 1 && h.first.kind_of?(Hash)
-      h.first.each { |k,v| send("#{k}=",v) }
+class PresentationModel < OpenStruct
+
+  def to_hash options = nil
+    if self.respond_to?(:extra_hash)
+      _e = extra_hash options
+    else
+      _e = {}
     end
-  end
 
-  def data= _data
-    @data = _data
+    _i = instance_values.as_json(options)
+    _i.merge _e
+
   end
 
   def data
-    @data
+    self.to_h
   end
 
 end

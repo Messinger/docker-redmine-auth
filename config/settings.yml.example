@@ -1,6 +1,9 @@
 redmine_url:
   default: https://localhost:3000
 
+gitlab_url:
+  default: https://localhost:3001
+
 # must match docker registry config! (auth.token.issuer)
 # and the issuer of ssl certifcates
 docker_issuer:
@@ -45,3 +48,7 @@ rest_proxy_host:
 rest_proxy_port:
   default:
 
+auth_modules:
+  default:
+    - redmine
+    - gitlab

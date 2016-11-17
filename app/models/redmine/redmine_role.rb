@@ -1,14 +1,14 @@
-require 'utils/attributes_accessor'
 require 'redmine_http'
 
 module Redmine
   class RedmineRole  < PresentationModel
-    @@class_attributes_elements = %w[ id name inherited:bool ]
-
-    include AttributesAccessor
 
     def permissions
-      @permissions ||= gen_permissions
+      unless to_h.key?(:permissions)
+        _p = gen_permissions
+        send('permissions=',_p)
+      end
+      self[:permissions]
     end
 
     def extra_hash options = {}
@@ -18,9 +18,9 @@ module Redmine
     def retrieve_permissions! user
       _p = RedmineHttp.new('roles',user.auth).find(self.id)
       if !_p.nil?
-        _p = RedmineRole.new({:data => _p})
-        @permissions = _p.permissions unless _p.blank?
-        permissions
+        _p = RedmineRole.new(_p)
+        send('permissions=',_p.permissions.map {|p| p.to_sym } ) unless _p.blank?
+        @permissions = _p.permissions.map {|p| p.to_sym }  unless _p.blank?
       else
         nil
       end

@@ -1,14 +1,10 @@
-require 'utils/attributes_accessor'
 require 'redmine_http'
 require 'redmine/redmine_membership'
 require 'http_exceptions'
 require 'user_presentation_model'
 
 module Redmine
-  class User < UserPresentationModel
-    @@class_attributes_elements = %w[ id:int login firstname lastname mail created_on last_login api_key groups auth ]
-
-    include AttributesAccessor
+  class RedmineUser < UserPresentationModel
 
     def self.login _username, _password
       auth = {:username => _username, :password => _password}
@@ -20,7 +16,7 @@ module Redmine
         else
           _u['auth'] = {:apitoken => _u['api_key']}
         end
-        User.new({:data => _u})
+        RedmineUser.new(_u)
       else
         raise HttpExceptions::Unauthorized.new
       end
@@ -35,6 +31,7 @@ module Redmine
       {:memberships => memberships.map {|item| item.to_hash(options) }}
     end
 
+    # ensure that project is kind of RedmineProject
     def can_write? _project
       return true if Setting.admin_users.include? self.login
       _m = find_memberships_by_project _project
@@ -42,6 +39,7 @@ module Redmine
       !_m.find{|x| x.repository_write_role?(self)}.blank?
     end
 
+    # ensure that project is kind of RedmineProject
     def can_read? _project
       return true if Setting.admin_users.include? self.login
 
@@ -65,10 +63,10 @@ module Redmine
     private
 
     def gen_memberships
-      _ms = data['memberships']
+      _ms = data[:memberships]
       return [] if _ms.blank?
       _ms.map do |item|
-        RedmineMembership.new({:data => item })
+        RedmineMembership.new(item )
       end
     end
   end

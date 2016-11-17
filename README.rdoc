@@ -2,7 +2,7 @@
 
 Working:
 
-* docker-registry authentication against a redmine installation
+* docker-registry authentication against a redmine or gitlab installation
 
 * check access via repository pathes (push/pull allowed or not) or just login
 
