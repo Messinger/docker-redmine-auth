@@ -4,6 +4,7 @@ require 'user_presentation_model'
 
 module Gitlab
   class GitlabUser < UserPresentationModel
+
     def self.login _username, _password
 
       begin
@@ -41,11 +42,37 @@ module Gitlab
     # ensure that project is kind of GitlabProject or identifier
     def can_write? _project
       return true if Setting.admin_users.include? self.username
+      if @projects_permissions.nil?
+        @projects_permissions = {}
+      end
+      unless @projects_permissions.key?(_project.id)
+        @projects_permissions[_project.id] = retrieve_project_permissions _project.id
+      end
+      @projects_permissions[_project.id].access_level >= 30
     end
 
     # ensure that project is kind of GitlabProject or identifier
     def can_read? _project
       return true if Setting.admin_users.include? self.username
+      if @projects_permissions.nil?
+        @projects_permissions = {}
+      end
+      unless @projects_permissions.key?(_project.id)
+        @projects_permissions[_project.id] = retrieve_project_permissions _project.id
+      end
+      @projects_permissions[_project.id].access_level >= 20
+    end
+
+
+
+    def retrieve_project_permissions project_id
+      begin
+        _r = GitlabHttp.new("projects/#{project_id}/members",authtoken).retrieve(self.id)
+      rescue => ex
+        p ex.inspect
+        _r = {:access_level => 0}
+      end
+      GitlabPermission.new _r
     end
 
     private

@@ -24,6 +24,10 @@ class AuthController < ApplicationController
 
   end
 
+  def check_authentications _user,_password
+
+  end
+
   def generate_auth_token
     aud = Setting.service_name
     jti_raw = [@current_user.api_key, Time.now.to_i].join(':').to_s

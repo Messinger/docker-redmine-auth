@@ -1,3 +1,4 @@
+
 module Gitlab
   class GitlabProject  < PresentationModel
 
