@@ -69,7 +69,6 @@ module Gitlab
       begin
         _r = GitlabHttp.new("projects/#{project_id}/members",authtoken).retrieve(self.id)
       rescue => ex
-        p ex.inspect
         _r = {:access_level => 0}
       end
       GitlabPermission.new _r
