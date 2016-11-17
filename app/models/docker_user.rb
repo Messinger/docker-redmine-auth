@@ -11,10 +11,22 @@ class DockerUser
   end
 
   def can_read? identifier
+    @authuser.each do |user|
+      pr = user.find_project_by_identifier identifier
+      if !pr.nil? && user.can_read?(pr)
+        return true
+      end
+    end
     false
   end
 
   def can_write? identifier
+    @authuser.each do |user|
+      pr = user.find_project_by_identifier identifier
+      if !pr.nil? && user.can_write?(pr)
+        return true
+      end
+    end
     false
   end
 
