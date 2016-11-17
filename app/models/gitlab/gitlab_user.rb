@@ -23,5 +23,33 @@ module Gitlab
       {:accesstoken => private_token}
     end
 
+    def api_key
+      privat_token
+    end
+
+    def projects
+      @projects ||= retrieve_projects
+    end
+
+    private
+
+    def retrieve_projects
+
+      projects = []
+      begin
+        _r = GitlabHttp.new('projects',authtoken).retrieve('visible')
+
+        projects = _r.map do |rp|
+          Gitlab::GitlabProject.new({:data => rp})
+        end
+
+      rescue HttpExceptions::RequestException => e
+        []
+      end
+
+      projects
+
+    end
+
   end
 end
