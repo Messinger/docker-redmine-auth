@@ -1,13 +1,9 @@
-require 'utils/attributes_accessor'
 require 'redmine_http'
 require 'redmine/redmine_role'
 require 'redmine/redmine_project'
 
 module Redmine
   class RedmineMembership  < PresentationModel
-    @@class_attributes_elements = %w[ id:int ]
-
-    include AttributesAccessor
 
     def project
       @project ||= gen_project
@@ -32,12 +28,12 @@ module Redmine
     private
 
     def gen_project
-      RedmineProject.new({:data => data['project']})
+      RedmineProject.new(data[:project])
     end
 
     def gen_roles
-      return [] if data['roles'].blank?
-      data['roles'].map {|item| RedmineRole.new({:data => item})}
+      return [] if data[:roles].blank?
+      data[:roles].map {|item| RedmineRole.new(item)}
     end
   end
 end

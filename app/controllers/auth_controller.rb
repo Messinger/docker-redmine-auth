@@ -15,11 +15,33 @@ class AuthController < ApplicationController
 
   def authenticate
 
-    if user = authenticate_with_http_basic { |u, p| Redmine::User.login(u, p) }
+    if user = authenticate_with_http_basic { |u, p| check_authentications(u, p) }
       @current_user = user
       debug @current_user.as_json(:except => ['auth'])
     else
       request_http_basic_authentication
+    end
+
+  end
+
+  def check_authentications _user,_password
+    logins = []
+
+    Setting.auth_modules.each do |authmodule|
+      begin
+        a = Object.const_get(authmodule.camelcase).const_get("#{authmodule.camelcase}User").login(_user,_password)
+        unless a.nil?
+          logins << a
+        end
+      rescue => _
+
+      end
+    end
+
+    if logins.count > 0
+      DockerUser.new _user,logins
+    else
+      nil
     end
 
   end
@@ -44,18 +66,16 @@ class AuthController < ApplicationController
 
       if Setting.full_access_check && !Setting.admin_users.include?(@current_user.login)
         _temp_actions = []
-        names = _scope[1].split '/'
-        @redmine_project_id = names[0] unless names.blank?
+        @redmine_project_id =  gen_context_name(_scope[1]) unless _scope[1].blank?
         if @redmine_project_id == 'catalog' && _scope[0]=='registry'
           _temp_actions << '*'
         else
           unless @redmine_project_id.blank?
-            project = Redmine::RedmineProject.find_by_identifier @redmine_project_id, @current_user
             if _actions.include? '*'
-              _temp_actions << '*' if @current_user.can_read?(project) && @current_user.can_write?(project)
+              _temp_actions << '*' if @current_user.can_read?(@redmine_project_id) && @current_user.can_write?(@redmine_project_id)
             else
-              _temp_actions << 'pull' if @current_user.can_read? project
-              _temp_actions << 'push' if @current_user.can_write? project
+              _temp_actions << 'pull' if @current_user.can_read? @redmine_project_id
+              _temp_actions << 'push' if @current_user.can_write? @redmine_project_id
             end
           end
         end
@@ -68,4 +88,14 @@ class AuthController < ApplicationController
     end
   end
 
+  private
+
+  def gen_context_name _scope
+    '' if _scope.blank?
+    _r = _scope.split('/')[0..-2].join('/')
+    if _r.blank?
+      _r = _scope.split('/')[0]
+    end
+    _r
+  end
 end

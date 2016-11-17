@@ -24,7 +24,7 @@ class Setting < ActiveRecord::Base
   def value
     v = read_attribute(:value)
     # Unserialize serialized settings
-    v = YAML::load(v) if @@available_settings[name]['serialized'] && v.is_a?(String)
+    v = YAML::load(v) if (@@available_settings[name]['format'] == 'list' || @@available_settings[name]['serialized']) && v.is_a?(String)
     v = v.to_sym if @@available_settings[name]['format'] == 'symbol' && !v.blank?
     v = v.to_i if @@available_settings[name]['format'] == 'int' && !v.blank?
     v = v.to_bool if @@available_settings[name]['format'] == 'bool' && !v.blank?
