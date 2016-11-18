@@ -1,0 +1,2 @@
+@registryadmin.controller 'RegistryAdminCtrl', ($scope) ->
+
