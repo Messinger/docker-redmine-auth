@@ -1,2 +1,1 @@
 @registryadmin.controller 'RegistryAdminCtrl', ($scope) ->
-

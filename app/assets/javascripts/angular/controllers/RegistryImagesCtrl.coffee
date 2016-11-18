@@ -1,0 +1,1 @@
+@registryadmin.controller 'RegistryImagesCtrl', ($scope) ->
