@@ -19,9 +19,6 @@
       $http.get(dockerapi+urlParts[0],config).then(
         (response) ->
           response.data
-        (response) ->
-          console.log response.statusText
-          response.statusText
       )
 
     {
