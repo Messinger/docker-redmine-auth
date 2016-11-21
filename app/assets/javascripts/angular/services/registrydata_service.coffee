@@ -6,7 +6,7 @@
       "Accept": "application/json",
     }
 
-    dockerapi = docker_admin_host
+    dockerapi = docker_admin_host+'/v2'
 
     get = (url,constructor = null, params = {} ) ->
       urlParts = url.split('#')
