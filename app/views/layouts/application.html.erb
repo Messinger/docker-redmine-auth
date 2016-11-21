@@ -8,11 +8,13 @@
 </head>
 <body>
 
-<div class="container" ng-view >
 
-<%= yield %>
+  <div class="container">
+    <div class="col-xs-offset-2 col-xs-8">
+      <div ng-view ></div>
+    </div>
+  </div>
 
-</div>
 
 </body>
 </html>

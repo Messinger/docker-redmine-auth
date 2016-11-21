@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require angular/angular
+//= require angular-cookies/angular-cookies
 //= require angular-loader/angular-loader
 //= require angular-animate/angular-animate
 //= require angular-resource/angular-resource
