@@ -44,8 +44,7 @@ class GitlabHttp
     begin
       response = self.class.post(@resource_uri,options)
     rescue HTTParty::RedirectionTooDeep => e
-      error es
-s
+      error e
       response = nil
     rescue => e
       error e
