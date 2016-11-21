@@ -6,7 +6,7 @@
       "Accept": "application/json",
     }
 
-    dockerapi = "http://localhost:5000/v2"
+    dockerapi = docker_admin_host
 
     get = (url,constructor = null, params = {} ) ->
       urlParts = url.split('#')

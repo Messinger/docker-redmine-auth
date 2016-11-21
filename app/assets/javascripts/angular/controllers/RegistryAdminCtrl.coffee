@@ -21,12 +21,13 @@
             if initialRequest
               initialRequest = false
           (result) ->
-            AuthHeader = result.headers['www-authenticate'] #['Www-Authenticate']
-            console.log AuthHeader
-            $rootScope.bearer = AuthHeader
 
             $scope.statusmessage = result['error'].message
             if result['status'] == 401
+              unless result.header == undefined
+                AuthHeader = result.headers['www-authenticate'] #['Www-Authenticate']
+                console.log AuthHeader
+                $rootScope.bearer = AuthHeader
               authRequired = true
               $location.path('/login')
         )
