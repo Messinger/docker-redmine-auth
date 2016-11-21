@@ -1,10 +1,10 @@
 @registryadmin.controller 'RegistryAdminCtrl', [
   "$scope",
   "registrydataService",
-  "registrystatusService",
+  "registryloginService",
   "$q",
   "$location"
-  ($scope,registrydataService,registrystatusService,$q,$location) ->
+  ($scope,registrydataService,registryloginService,$q,$location) ->
 
       initialRequest = true
       scopeDestroyed = false
@@ -12,7 +12,7 @@
       $scope.statusmessage = ""
 
       updatestatusmessage = () ->
-        val = registrystatusService.getLoginStatus()
+        val = registryloginService.getLoginStatus()
         val.then(
           (result) ->
             $scope.statusmessage = result
@@ -28,6 +28,5 @@
         if (!scopeDestroyed)
           $scope.$emit("$stateReadyToShow")
       updatestatusmessage()
-
 
 ]

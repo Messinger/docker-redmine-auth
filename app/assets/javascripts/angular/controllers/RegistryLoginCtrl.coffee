@@ -2,11 +2,11 @@
 @registryadmin.controller 'RegistryLoginCtrl', [
   "$scope"
   "registrydataService"
-  "registrystatusService"
+  "registryloginService"
   "$q"
-  ($scope,registrydataService,registrystatusService,$q) ->
+  ($scope,registrydataService,registryloginService,$q) ->
     scopeDestroyed = false
 
-    registrystatusService.clearCredentials()
+    registryloginService.clearCredentials()
 
 ]

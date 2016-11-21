@@ -1,4 +1,4 @@
-@registryadmin.service('registrystatusService',[
+@registryadmin.service('registryloginService',[
   "Base64"
   "registrydataService"
   "$http"
