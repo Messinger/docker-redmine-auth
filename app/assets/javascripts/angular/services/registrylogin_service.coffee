@@ -14,10 +14,17 @@
         (response) ->
           deferred.resolve(response)
         (response) ->
-          res = {
-            error: response.data["errors"][0]
-            status: response.status
-          }
+          if response == undefined || response.data == null
+            res = {
+              error: {message: "Unknown"}
+              status: 0
+            }
+          else
+            res = {
+              error: response.data["errors"][0]
+              status: response.status
+              headers: response.headers()
+            }
           deferred.reject(
             res
           )
@@ -26,9 +33,8 @@
 
     clearCredentials = () ->
       $rootScope.globals = {}
-      $cookies.remove('globals')
+      $cookies.remove('dockeradmin')
       $http.defaults.headers.common.Authorization = 'Basic '
-
 
     setCredentials = (user,password) ->
       authdata = Base64.encode(user + ':' + password)
@@ -39,12 +45,13 @@
         }
       }
       $http.defaults.headers.common['Authorization'] = "Basic #{authdata}"
-      $cookies.put('globals', $rootScope.globals)
+      $cookies.put('dockeradmin', $rootScope.globals)
 
     {
       getLoginStatus: getLoginStatus
       clearCredentials: clearCredentials
       setCredentials: setCredentials
+      login: setCredentials
     }
 
   ])

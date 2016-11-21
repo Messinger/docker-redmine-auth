@@ -18,10 +18,6 @@
       $http.get(dockerapi+urlParts[0],config).then(
         (response) ->
           response.data
-        (response) ->
-#          AuthHeader = response.headers('Www-Authenticate')
-#          console.log AuthHeader
-          response
       )
 
     {

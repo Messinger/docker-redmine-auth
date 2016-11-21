@@ -1,10 +1,11 @@
 @registryadmin.controller 'RegistryAdminCtrl', [
-  "$scope",
-  "registrydataService",
-  "registryloginService",
-  "$q",
+  "$scope"
+  "registrydataService"
+  "registryloginService"
+  "$q"
   "$location"
-  ($scope,registrydataService,registryloginService,$q,$location) ->
+  "$rootScope"
+  ($scope,registrydataService,registryloginService,$q,$location,$rootScope) ->
 
       initialRequest = true
       scopeDestroyed = false
@@ -20,6 +21,10 @@
             if initialRequest
               initialRequest = false
           (result) ->
+            AuthHeader = result.headers['www-authenticate'] #['Www-Authenticate']
+            console.log AuthHeader
+            $rootScope.bearer = AuthHeader
+
             $scope.statusmessage = result['error'].message
             if result['status'] == 401
               authRequired = true
