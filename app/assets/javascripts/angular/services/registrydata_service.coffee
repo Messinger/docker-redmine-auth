@@ -4,7 +4,6 @@
   ($http,$q) ->
     headers = {
       "Accept": "application/json",
-      "Content-Type": "application/json",
     }
 
     dockerapi = "http://localhost:5000/v2"
@@ -19,6 +18,10 @@
       $http.get(dockerapi+urlParts[0],config).then(
         (response) ->
           response.data
+        (response) ->
+#          AuthHeader = response.headers('Www-Authenticate')
+#          console.log AuthHeader
+          response
       )
 
     {
