@@ -8,18 +8,19 @@ class ApiMapperHttp
   include RestExceptions
   extend Kuxdo
 
-  #debug_output $stdout
+  debug_output $stdout
   no_follow(true)
-  base_uri Setting.docker_admin_host+"/v2"
+  base_uri ''
 
-  def initialize method,actionurl,parameters = {},headers = {},data = {}
+  def initialize method,actionurl,auth = {}, parameters = {},headers = {},data = {}
 
     @method = method
     @actionurl = actionurl||''
     @parameters = parameters
     @headers = headers
     @data = data
-    @resource_uri = "/#{@actionurl}"
+    @resource_uri = "#{@actionurl}"
+    @auth = auth
 
     unless Setting.rest_proxy_host.blank?
       proxy_port = Setting.rest_proxy_port.blank? ? nil : Setting.rest_proxy_port
@@ -28,11 +29,17 @@ class ApiMapperHttp
 
   end
 
-  def doaction
+  def doaction options={}
 
-    options = @parameters.merge({:headers => @headers})
+    options.merge!({:headers => @headers,:parameters => @parameters})
     unless @data.blank?
       options.merge!({:body => @data.to_json})
+    end
+
+    unless @auth.blank?
+      if @auth.key?(:authtoken) && !@auth[:authtoken].blank?
+        options[:headers][:Authorization] = @auth[:authtoken]
+      end
     end
 
     response = self.class.send(@method,@resource_uri,options)

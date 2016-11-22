@@ -38,7 +38,14 @@
 
       bear = bearer_to_parts(bearer)
 
-      $http.get(bear['url'],{headers:_h,params: bear['params']}).then(
+      data = JSON.stringify({url: bear['url'],params: bear['params'],authtoken: authtoken})
+
+      $http({
+        method:'POST'
+        url: '/auth_mapper'
+        data: data
+        headers:_h
+        }).then(
         (response) ->
           deferred.resolve(response.data)
         (response) ->

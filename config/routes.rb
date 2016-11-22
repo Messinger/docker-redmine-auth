@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   match '/api_mapper/v2', :to => 'registry_admin#api_mapper', :via => [:get]
   match '/api_mapper/v2/*apiaction', :to => 'registry_admin#api_mapper', :via => [:post,:put,:get,:options,:delete]
 
+  match '/auth_mapper', :to => 'registry_admin#auth_mapper', :via => [:post]
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

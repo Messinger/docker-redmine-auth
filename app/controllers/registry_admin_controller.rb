@@ -8,10 +8,11 @@ class RegistryAdminController < ApplicationController
   def api_mapper
     _method = request.method_symbol
     _headers = request.headers
-    _path = params[:apiaction]
+    _auth = _headers['X-Authorization']
+    _path = "#{Setting.docker_admin_host}/v2/#{params[:apiaction]}"
 
 
-    _h,_r = ApiMapperHttp.new(_method,_path,params,{'Accept' => 'application/json'}).doaction
+    _h,_r = ApiMapperHttp.new(_method,_path,{:authtoken => _auth},{}, {'Accept' => 'application/json'}).doaction
 
     _rheaders = _h.headers.as_json.merge(response.headers)
 
@@ -26,6 +27,19 @@ class RegistryAdminController < ApplicationController
     debug response.headers.inspect
 
     render :json => _r, :status => _h.code, :content_type => _h.headers['content-type']
+  end
+
+  def auth_mapper
+    _p = params[:params]
+    _uri = params[:url]
+    auth = {:authtoken => params[:authtoken]}
+
+    debug(params)
+
+    _h,_r = ApiMapperHttp.new(:get,_uri,auth,_p, {'Accept' => 'application/json'}).doaction
+
+    render :json => _r, :status => _h.code, :content_type => _h.headers['content-type']
+
   end
 
 end

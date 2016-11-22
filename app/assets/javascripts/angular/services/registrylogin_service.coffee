@@ -17,7 +17,7 @@
 
       docheck = () ->
         if token != undefined
-          _head['Authorization']="Basic #{token}"
+          _head['X-Authorization']="Bearer #{token}"
         registrydataService.get('/',_head).then(
           (response) ->
             deferred.resolve(response)
@@ -31,8 +31,13 @@
               if counter == 0 && $rootScope.globals != undefined && $rootScope.globals.currentUser != undefined
                 counter++
                 AuthHeader = response.headers()['www-authenticate']
-                token = registrytokenService.create_token(AuthHeader)
-                docheck()
+                registrytokenService.create_token(AuthHeader).then(
+                  (response) ->
+                    token = response
+                    unless token == undefined
+                      token = token.token
+                    docheck()
+                )
               else
                 res = {
                   error: response.data["errors"][0]
