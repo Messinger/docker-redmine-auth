@@ -20,6 +20,7 @@ gem 'coffee-rails', '~> 4.0.0'
 #gem 'angularjs-rails'
 #gem 'angular-ui-bootstrap-rails' #for bootstrap UI
 gem 'bower-rails'
+gem 'angular-rails-templates'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'
