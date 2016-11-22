@@ -14,7 +14,7 @@
 
     $scope.login = () ->
       registryloginService.setCredentials($scope.username, $scope.password)
-      back = $rootScope.loginback
+      back = $rootScope.loginback || '/'
       $rootScope.loginback = undefined
       $location.path(back)
 
