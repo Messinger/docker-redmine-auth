@@ -19,7 +19,13 @@ class AuthController < ApplicationController
       @current_user = user
       debug @current_user.as_json(:except => ['auth'])
     else
-      request_http_basic_authentication
+      if request.headers['X-Requested-With'] == 'XMLHttpRequest'
+        self.headers["WWW-Authenticate"] = %(xBasic realm="Application")
+        self.response_body = "HTTP Basic: Access denied.\n"
+        self.status = 401
+      else
+        request_http_basic_authentication
+      end
     end
 
   end
