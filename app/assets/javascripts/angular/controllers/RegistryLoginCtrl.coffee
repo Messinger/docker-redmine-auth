@@ -5,7 +5,8 @@
   "registryloginService"
   "$q"
   "$location"
-  ($scope,registrydataService,registryloginService,$q,$location) ->
+  "$rootScope"
+  ($scope,registrydataService,registryloginService,$q,$location,$rootScope) ->
     scopeDestroyed = false
 
     registryloginService.clearCredentials()
@@ -13,7 +14,9 @@
 
     $scope.login = () ->
       registryloginService.setCredentials($scope.username, $scope.password)
-      $location.path('/')
+      back = $rootScope.loginback
+      $rootScope.loginback = undefined
+      $location.path(back)
 
 #      val = registryloginService.getLoginStatus()
 

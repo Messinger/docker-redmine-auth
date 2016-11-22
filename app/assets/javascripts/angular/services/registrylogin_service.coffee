@@ -25,6 +25,7 @@
               status: response.status
               headers: response.headers()
             }
+          console.log res
           deferred.reject(
             res
           )

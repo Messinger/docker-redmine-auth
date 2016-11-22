@@ -15,7 +15,15 @@ class RegistryAdminController < ApplicationController
 
     _rheaders = _h.headers.as_json.merge(response.headers)
 
+    debug response.headers.inspect
+    debug _h.headers.as_json
+
+    #ignore_headers = %w[content-length]
+    #response.headers.merge!(_h.as_json)
+
     response.headers.merge!(_rheaders)
+    response.headers.delete('content-length')
+    debug response.headers.inspect
 
     render :json => _r, :status => _h.code, :content_type => _h.headers['content-type']
   end
