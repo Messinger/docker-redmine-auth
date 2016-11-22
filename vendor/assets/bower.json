@@ -5,7 +5,7 @@
     "angular-animate": "latest",
     "angular-resource": "latest",
     "angular-route": "latest",
-    "angular-ui-bootstrap": "latest",
+    "angular-bootstrap": "latest",
     "angular-loader": "latest",
     "angular-cookies": "latest",
     "bootstrap-sass-official": "latest"
