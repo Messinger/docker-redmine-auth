@@ -8,10 +8,10 @@
 
     dockerapi = docker_admin_host+'/v2'
 
-    get = (url,constructor = null, params = {} ) ->
+    get = (url,extraheader = {}, constructor = null, params = {} ) ->
       urlParts = url.split('#')
       config = {
-        headers: headers
+        headers: angular.merge({},headers,extraheader)
         params: params
       }
 

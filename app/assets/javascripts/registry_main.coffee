@@ -1,7 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 
-@registryadmin = angular.module('registryadmin',['ngRoute', 'ngResource','ngCookies'])
+@registryadmin = angular.module('registryadmin',['ngRoute', 'ngResource','ngCookies','ui.bootstrap'])
 
 @registryadmin.config( ($routeProvider) ->
   $routeProvider
