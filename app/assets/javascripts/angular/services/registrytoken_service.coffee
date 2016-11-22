@@ -9,6 +9,24 @@
     }
 
 
+    bearer_to_parts = (bearer) ->
+      #'Bearer realm="http://localhost:3000/auth.json",service="Docker registry'
+
+      _base = bearer.replace('Bearer realm=','')
+      console.log _base
+      parts = _base.split(',')
+      console.log parts
+      url = parts[0].replace(/^["]+|["]+$/g,"")
+      console.log url
+      params = {}
+      parts = parts.slice(1)
+
+      for _p in parts
+        kv = _p.split('=')
+        params[kv[0]] = kv[1].replace(/^["]+|["]+$/g,"")
+
+      {url: url,params: params}
+
     create_token = (bearer) ->
 
       deferred = $q.defer()
@@ -18,12 +36,9 @@
       })
       _h['X-Requested-With']='XMLHttpRequest'
 
-      bear = bearer.split('realm=')
-      bres = bear[1].split(",")
-      _uri = bres[0].replace(/^["]+|["]+$/g,"")
-      params = bres[1]
+      bear = bearer_to_parts(bearer)
 
-      $http.get(_uri,{headers:_h}).then(
+      $http.get(bear['url'],{headers:_h,params: bear['params']}).then(
         (response) ->
           deferred.resolve(response)
         (response) ->
@@ -33,5 +48,6 @@
 
     {
       create_token: create_token
+      bearer_to_parts: bearer_to_parts
     }
 ])
