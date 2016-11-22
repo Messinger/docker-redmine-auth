@@ -40,7 +40,7 @@
 
       $http.get(bear['url'],{headers:_h,params: bear['params']}).then(
         (response) ->
-          deferred.resolve(response)
+          deferred.resolve(response.data)
         (response) ->
           deferred.reject(response)
       )
