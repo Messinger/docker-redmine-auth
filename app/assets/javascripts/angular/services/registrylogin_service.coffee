@@ -8,13 +8,13 @@
   "$q"
   (Base64,registrydataService,registrytokenService,$http, $cookies, $rootScope, $q) ->
 
-    getLoginStatus = () ->
+    getLoginStatus = (beartoken) ->
       deferred = $q.defer()
 
       _head = {}
 
       docheck = () ->
-        registrydataService.get('/',_head).then(
+        registrydataService.get(beartoken,'/').then(
           (response) ->
             deferred.resolve(response)
           (response) ->
@@ -33,7 +33,6 @@
     clearCredentials = () ->
       $rootScope.globals = {}
       $cookies.remove('dockeradmin')
-      $http.defaults.headers.common.Authorization = 'Basic '
 
     setCredentials = (user,password) ->
       authdata = Base64.encode(user + ':' + password)
@@ -43,7 +42,6 @@
           authdata: authdata
         }
       }
-      $http.defaults.headers.common['Authorization'] = "Basic #{authdata}"
       $cookies.put('dockeradmin', $rootScope.globals)
 
     {

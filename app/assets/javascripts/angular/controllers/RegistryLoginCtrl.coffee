@@ -18,17 +18,4 @@
       $rootScope.loginback = undefined
       $location.path(back) unless back == undefined
 
-#      val = registryloginService.getLoginStatus()
-
-#      val.then(
-#        (result) ->
-#          $scope.statusmessage = result
-#          $location.path('/')
-#        (result) ->
-#          if result == undefined || result['status'] == 401
-#            authRequired = true
-#            $location.path('/login')
-#      )
-
-
 ]

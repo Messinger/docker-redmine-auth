@@ -49,6 +49,9 @@
           params: bear['params']
         })
       else
+        _h = angular.merge({},headers,{
+          })
+        _h['X-Requested-With']='XMLHttpRequest'
         data = JSON.stringify({url: bear['url'],params: bear['params'],authtoken: authtoken})
         http_result = $http({
           method:'POST'

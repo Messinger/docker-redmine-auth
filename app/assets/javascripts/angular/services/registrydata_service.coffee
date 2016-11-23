@@ -4,19 +4,18 @@
   "$rootScope"
   "$q"
   (registrytokenService,$http,$rootScope,$q) ->
-    headers = {
+    standardheaders = {
       "Accept": "application/json",
     }
 
     dockerapi = docker_admin_host+'/v2'
 
-    action = (method,url,params = {}, data = null ,extraheader,constructor = null) ->
+    action = (beartoken, method,url,params = {}, data = null ,extraheader,constructor = null) ->
       deferred = $q.defer()
       urlParts = url.split('#')
 
       counter = 0
-      beartoken = undefined
-      headers = angular.merge({},headers,extraheader)
+      headers = angular.merge({},standardheaders,extraheader)
 
       _u = dockerapi+urlParts[0]
       config = {
@@ -31,6 +30,9 @@
       doaction = () ->
         if beartoken != undefined
           headers['X-Authorization']="Bearer #{beartoken}"
+        else
+          delete headers['X-Authorization']
+
         config['headers'] = headers
         http_result = $http(config)
         http_result.then(
@@ -49,9 +51,9 @@
                 AuthHeader = response.headers()['www-authenticate']
                 registrytokenService.create_token(AuthHeader).then(
                   (response) ->
-                    beartoken = response
-                    unless beartoken == undefined
-                      beartoken = beartoken.token
+                    _token = response
+                    unless _token == undefined
+                      beartoken = _token.token
                     doaction()
                 )
               else
@@ -66,8 +68,8 @@
       doaction()
       deferred.promise
 
-    get = (url,extraheader = {}, constructor = null, params = {} ) ->
-      action('GET',url,params,null,extraheader,constructor)
+    get = (scope,url,extraheader = {}, constructor = null, params = {} ) ->
+      action(scope,'GET',url,params,null,extraheader,constructor)
 
 
     {
