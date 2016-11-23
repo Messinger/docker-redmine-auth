@@ -17,6 +17,10 @@
     templateUrl: 'templates/login.html',
     controller: 'RegistryLoginCtrl'
   })
+  .when("/repository",{
+    templateUrl: 'templates/repository.html'
+    controller: 'RegistryRepositoryCtrl'
+  })
   .otherwise({
       templateUrl: 'templates/home.html',
       controller: 'RegistryAdminCtrl'
