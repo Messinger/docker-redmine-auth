@@ -10,9 +10,14 @@ class RegistryAdminController < ApplicationController
     _headers = request.headers
     _auth = _headers['X-Authorization']
     _path = "#{Setting.docker_admin_host}/v2/#{params[:apiaction]}"
+    _pars = params.to_hash.symbolize_keys!
+    _pars.delete(:controller)
+    _pars.delete(:action)
+    _pars.delete(:apiaction)
 
+    debug _pars
 
-    _h,_r = ApiMapperHttp.new(_method,_path,{:authtoken => _auth},{}, {'Accept' => 'application/json'}).doaction
+    _h,_r = ApiMapperHttp.new(_method,_path,{:authtoken => _auth},_pars, {'Accept' => 'application/json'}).doaction
 
     _rheaders = _h.headers.as_json.merge(response.headers)
 
