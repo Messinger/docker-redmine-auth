@@ -11,13 +11,9 @@
     getLoginStatus = () ->
       deferred = $q.defer()
 
-      counter = 0
-      token = undefined
       _head = {}
 
       docheck = () ->
-        if token != undefined
-          _head['X-Authorization']="Bearer #{token}"
         registrydataService.get('/',_head).then(
           (response) ->
             deferred.resolve(response)
@@ -28,24 +24,8 @@
                 status: 0
               }
             else
-              if counter == 0 && $rootScope.globals != undefined && $rootScope.globals.currentUser != undefined
-                counter++
-                AuthHeader = response.headers()['www-authenticate']
-                registrytokenService.create_token(AuthHeader).then(
-                  (response) ->
-                    token = response
-                    unless token == undefined
-                      token = token.token
-                    docheck()
-                )
-              else
-                res = {
-                  error: response.data["errors"][0]
-                  status: response.status
-                  headers: response.headers()
-                }
-                console.log res
-                deferred.reject(res)
+              res = response
+            deferred.reject(res)
         )
       docheck()
       deferred.promise
