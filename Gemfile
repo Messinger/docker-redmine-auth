@@ -47,5 +47,5 @@ gem 'unicorn-rails'
 
 gem 'httparty'
 gem 'logging-rails', :require => 'logging/rails'
-gem 'jwt'
-gem 'json-jwt'
+gem 'jwt', '~> 1.5.6'
+gem 'json-jwt', '~> 1.5.2'
