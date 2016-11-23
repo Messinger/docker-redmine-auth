@@ -1,9 +1,10 @@
-@registryadmin.controller 'RegistryRepositoryCtrl', [
+@registryadmin.controller 'RegistryRepositoriesCtrl', [
   "$scope"
   "registrydataService"
   "repositoriesService"
+  "$location"
   "$q"
-  ($scope,registrydataService,repositoriesService,$q) ->
+  ($scope,registrydataService,repositoriesService,$location,$q) ->
 
     getlist = () ->
       deferred = $q.defer()
@@ -25,5 +26,10 @@
 
       )
     )
+
+    $scope.goRepo = (repo) ->
+      console.log repo
+      $location.path("/repository").search({repo: repo})
+
 
 ]
