@@ -42,7 +42,7 @@
           authdata: authdata
         }
       }
-      $cookies.put('dockeradmin', $rootScope.globals)
+      $cookies.putObject('dockeradmin', $rootScope.globals)
 
     {
       getLoginStatus: getLoginStatus

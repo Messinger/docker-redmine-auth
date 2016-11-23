@@ -6,13 +6,17 @@
   "$q"
   "$location"
   "$rootScope"
-  ($scope,registrydataService,registryloginService,registrytokenService,$q,$location,$rootScope) ->
+  "$cookies"
+  ($scope,registrydataService,registryloginService,registrytokenService,$q,$location,$rootScope,$cookies) ->
 
       initialRequest = true
       scopeDestroyed = false
       authRequired = false
       $scope.statusmessage = ""
       roottoken = undefined
+      globaldata = $cookies.getObject('dockeradmin')
+      if $rootScope.globals == undefined
+        $rootScope.globals = globaldata
 
       updatestatusmessage = () ->
         val = registryloginService.getLoginStatus(roottoken)
