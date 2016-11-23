@@ -17,7 +17,7 @@
         val = registryloginService.getLoginStatus()
         val.then(
           (result) ->
-            $scope.statusmessage = result
+            $scope.statusmessage = "Access granted"
             authRequired = false
             if initialRequest
               initialRequest = false
