@@ -10,7 +10,7 @@
 
     dockerapi = docker_admin_host+'/v2'
 
-    action = (beartoken, method,url,params = {}, data = null ,extraheader,constructor = null) ->
+    action = (beartoken, method,url,params = {} ,extraheader = {}, data = null,constructor = null) ->
       deferred = $q.defer()
       urlParts = url.split('#')
 
@@ -68,8 +68,8 @@
       doaction()
       deferred.promise
 
-    get = (scope,url,extraheader = {}, constructor = null, params = {} ) ->
-      action(scope,'GET',url,params,null,extraheader,constructor)
+    get = (scope,url, params = {}, extraheader = {}, constructor = null ) ->
+      action(scope,'GET',url,params,extraheader,null,constructor)
 
 
     {

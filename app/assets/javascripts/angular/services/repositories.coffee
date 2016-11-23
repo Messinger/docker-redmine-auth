@@ -5,12 +5,16 @@
   "$q"
   (registrydataService,$http, $rootScope, $q) ->
 
-    getRepositories = (beartoken) ->
+    getRepositories = (beartoken,start,max) ->
       deferred = $q.defer()
-      registries = registrydataService.get(beartoken,'/_catalog')
+      if max > 0
+        _p = {n: max, last: start}
+      else
+        _p = null
+      registries = registrydataService.get(beartoken,'/_catalog',_p)
       registries.then(
         (response) ->
-          _list = response.data['repositories']
+          _list = response.data
           deferred.resolve(_list)
       )
       deferred.promise
