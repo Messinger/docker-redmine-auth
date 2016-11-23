@@ -31,45 +31,37 @@
 
       deferred = $q.defer()
       authtoken = $rootScope.globals.currentUser.authdata
-      _h = angular.merge({},headers,{
-        Authorization:authtoken
-      })
-      _h['X-Requested-With']='XMLHttpRequest'
 
       bear = bearer_to_parts(bearer)
 
-      data = JSON.stringify({url: bear['url'],params: bear['params'],authtoken: authtoken})
-
-      console.log window.location.host
-      console.log window.location.protocol
-
       _loc = window.location.protocol+"//"+window.location.host
-      console.log _loc
 
       if bear['url'].startsWith(_loc)
-        $http({
+        _h = angular.merge({},headers,{
+          Authorization:authtoken
+        })
+        _h['X-Requested-With']='XMLHttpRequest'
+
+        http_result = $http({
           method: 'GET'
           url: bear['url']
           headers:_h
           params: bear['params']
-        }).then(
-          (response) ->
-            deferred.resolve(response.data)
-          (response) ->
-            deferred.reject(response)
-        )
+        })
       else
-        $http({
+        data = JSON.stringify({url: bear['url'],params: bear['params'],authtoken: authtoken})
+        http_result = $http({
           method:'POST'
           url: '/auth_mapper'
           data: data
           headers:_h
-          }).then(
-          (response) ->
-            deferred.resolve(response.data)
-          (response) ->
-            deferred.reject(response)
-        )
+          })
+      http_result.then(
+        (response) ->
+          deferred.resolve(response.data)
+        (response) ->
+          deferred.reject(response)
+      )
       deferred.promise
 
     {
