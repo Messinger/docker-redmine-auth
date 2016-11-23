@@ -111,8 +111,8 @@ PLATFORMS
 
 DEPENDENCIES
   httparty
-  json-jwt
-  jwt
+  json-jwt (~> 1.5.2)
+  jwt (~> 1.5.6)
   logging-rails
   rails (= 4.1.0)
   sdoc (~> 0.4.0)
