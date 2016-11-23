@@ -8,7 +8,7 @@ class ApiMapperHttp
   include RestExceptions
   extend Kuxdo
 
-  debug_output $stdout
+  #debug_output $stdout
   no_follow(true)
   base_uri ''
 
