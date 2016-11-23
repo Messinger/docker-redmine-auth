@@ -31,7 +31,7 @@ class ApiMapperHttp
 
   def doaction options={}
 
-    options.merge!({:headers => @headers,:parameters => @parameters})
+    options.merge!({:headers => @headers,:query => @parameters})
     unless @data.blank?
       options.merge!({:body => @data.to_json})
     end
