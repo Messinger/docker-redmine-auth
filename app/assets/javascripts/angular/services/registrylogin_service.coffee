@@ -31,7 +31,7 @@
       deferred.promise
 
     clearCredentials = () ->
-      $rootScope.globals = {}
+      $rootScope.globals = undefined
       $cookies.remove('dockeradmin')
 
     setCredentials = (user,password) ->

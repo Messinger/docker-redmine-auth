@@ -1,3 +1,5 @@
+initialRequest = true
+
 @registryadmin.controller 'RegistryAdminCtrl', [
   "$scope"
   "registrydataService"
@@ -9,14 +11,24 @@
   "$cookies"
   ($scope,registrydataService,registryloginService,registrytokenService,$q,$location,$rootScope,$cookies) ->
 
-      initialRequest = true
       scopeDestroyed = false
       authRequired = false
       $scope.statusmessage = ""
       roottoken = undefined
-      globaldata = $cookies.getObject('dockeradmin')
-      if $rootScope.globals == undefined
-        $rootScope.globals = globaldata
+      $scope.loggedIn = false
+      if initialRequest
+        initialRequest = false
+        globaldata = $cookies.getObject('dockeradmin')
+        if $rootScope.globals == undefined && globaldata != undefined
+          $rootScope.globals = globaldata
+
+      if $rootScope.globals != undefined  && $rootScope.globals.currentUser != undefined
+        $scope.loggedIn = true && authRequired == false
+
+      $scope.$on('$stateLoggedout', (event) ->
+        $scope.loggedIn = false
+        updatestatusmessage()
+      )
 
       updatestatusmessage = () ->
         val = registryloginService.getLoginStatus(roottoken)
@@ -25,8 +37,7 @@
             $scope.statusmessage = "Access granted"
             $rootScope.$broadcast('$stateReadyToShow')
             authRequired = false
-            if initialRequest
-              initialRequest = false
+
           (result) ->
             $scope.statusmessage = result['error'].message
             if result['status'] == 401
