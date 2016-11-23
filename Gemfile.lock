@@ -123,6 +123,9 @@ GEM
     unicorn (5.2.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
+    unicorn-rails (2.2.1)
+      rack
+      unicorn
     url_safe_base64 (0.2.2)
 
 PLATFORMS
@@ -140,7 +143,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   sqlite3
-  unicorn
+  unicorn-rails
 
 BUNDLED WITH
    1.13.6
