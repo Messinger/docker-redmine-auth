@@ -1,5 +1,6 @@
-<div ng-repeat="repo in repositories">
-    <div class="row">
-        <a ng-click="goRepo(repo)">{{repo}}</a>
-    </div>
-</div>
+
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="repo in repositories">
+        <a ui-sref="repositoryView({repository: repo})">{{repo}}</a>
+    </li>
+</ul>

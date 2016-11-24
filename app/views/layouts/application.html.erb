@@ -2,6 +2,8 @@
 <html ng-app="registryadmin" >
 <head>
 
+  <base href="<%= root_url %>">
+
   <script type="text/javascript">
 
     var docker_admin_host = '/api_mapper';
@@ -15,13 +17,7 @@
 </head>
 <body>
 
-
-  <div class="container-fluid">
-    <div class="col-xs-offset-1 col-xs-8">
-      <div ng-view ></div>
-    </div>
-  </div>
-
+<div ui-view></div>
 
 </body>
 </html>

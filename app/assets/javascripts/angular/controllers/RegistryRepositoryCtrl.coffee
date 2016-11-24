@@ -3,10 +3,13 @@
   "registrydataService"
   "repositoriesService"
   "$location"
+  "$state"
+  "$stateParams"
   "$q"
-  ($scope,registrydataService,repositoriesService,$location,$q) ->
+  ($scope,registrydataService,repositoriesService,$location,$state,$stateParams,$q) ->
 
-    console.log $location.search()
-    $scope.repository = $location.search()['repo']
+    if $stateParams.repository == ""
+      $state.go("registryOverview")
+    $scope.repository = $stateParams.repository
 
 ]

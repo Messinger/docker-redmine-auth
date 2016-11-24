@@ -26,8 +26,4 @@
 
       )
     )
-
-    $scope.goRepo = (repo) ->
-      console.log repo
-      $location.path("/repository").search({repo: repo})
 ]
