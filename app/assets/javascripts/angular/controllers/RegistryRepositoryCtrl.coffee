@@ -24,4 +24,14 @@
 
     listTags()
 
+    listManifests = (tag) ->
+      tags = registrytagsService.listManifests($scope.repository,tag,undefined,0,0)
+      tags.then(
+        (tags) ->
+          $scope.manifests = tags
+        (errors) ->
+          console.log errors
+      )
+
+    $scope.listManifests = listManifests
 ]

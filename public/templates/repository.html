@@ -4,7 +4,15 @@
     </div>
 
     <div class="col-l-4 col-s-12" >
-        {{tags}}
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="tag in tags">
+                <div ng-click="listManifests(tag)">{{tag}}</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-l-4 col-s-12" >
+        {{manifests}}
     </div>
 
 </div>
