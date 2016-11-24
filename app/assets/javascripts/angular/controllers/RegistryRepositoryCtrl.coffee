@@ -12,10 +12,8 @@
       $state.go("registryOverview")
     $scope.repository = $stateParams.repository
 
-    beartoken = undefined
-
     listTags = () ->
-      tags = registrytagsService.listTags($scope.repository,beartoken,0,0)
+      tags = registrytagsService.listTags($scope.repository,0,0)
       tags.then(
         (tags) ->
           $scope.tags = tags['tags']
@@ -27,7 +25,7 @@
     listTags()
 
     listManifests = (tag) ->
-      tags = registrytagsService.listManifests($scope.repository,tag,beartoken,0,0)
+      tags = registrytagsService.listManifests($scope.repository,tag,0,0)
       tags.then(
         (tags) ->
           $scope.manifests = tags

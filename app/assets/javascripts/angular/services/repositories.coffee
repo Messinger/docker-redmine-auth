@@ -5,7 +5,7 @@
   "$q"
   (registrydataService,registrytokenService, $rootScope, $q) ->
 
-    getRepositories = (beartoken,start,max) ->
+    getRepositories = (start,max) ->
       deferred = $q.defer()
       if max > 0
         _p = {n: max, last: start}

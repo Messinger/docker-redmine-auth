@@ -15,7 +15,6 @@ initialRequest = true
       scopeDestroyed = false
       authRequired = false
       $scope.statusmessage = ""
-      roottoken = undefined
       $rootScope.loggedIn = false
       if initialRequest
         initialRequest = false
@@ -32,7 +31,7 @@ initialRequest = true
       )
 
       updatestatusmessage = () ->
-        val = registryloginService.getLoginStatus(roottoken)
+        val = registryloginService.getLoginStatus()
         val.then(
           (result) ->
             $scope.statusmessage = "Access granted"

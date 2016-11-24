@@ -4,7 +4,7 @@
   "$q"
   (registrydataService,registrytokenService, $q) ->
 
-    listTags = (repository,beartoken,start,max) ->
+    listTags = (repository,start,max) ->
       deferred = $q.defer()
       if max > 0
         _p = {n: max, last: start}
@@ -21,7 +21,7 @@
       )
       deferred.promise
 
-    listManifests = (repository,tagordigest,beartoken,start,max) ->
+    listManifests = (repository,tagordigest,start,max) ->
       deferred = $q.defer()
       if max > 0
         _p = {n: max, last: start}
