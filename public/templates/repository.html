@@ -1,16 +1,18 @@
 <div ng-controller="RegistryRepositoryCtrl">
-    <div class="col-l-4 col-s-12" >
-    {{repository}}
-    </div>
-
-    <div class="col-l-4 col-s-12" >
-        <div class="list-group">
-            <button type="button" class="list-group-item" ng-repeat="tag in tags" ng-click="listManifests(tag)">{{tag}}</button>
+    <div class="row">
+        <div class="col-md-4 col-sd-offset-1 col-s-12" >
+        <h3>Tags for {{repository}}</h3>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-6 col-md-3" >
+            <div class="list-group">
+                <button type="button" class="list-group-item" ng-repeat="tag in tags" ng-click="listManifests(tag)">{{tag}}</button>
+            </div>
+        </div>
 
-    <div class="col-l-4 col-s-12" >
-        {{manifests}}
+        <div class="col-xs-12 col-md-9" >
+            {{manifests}}
+        </div>
     </div>
-
 </div>
