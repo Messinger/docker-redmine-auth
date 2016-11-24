@@ -71,8 +71,12 @@
     get = (scope,url, params = {}, extraheader = {}, constructor = null ) ->
       action(scope,'GET',url,params,extraheader,null,constructor)
 
+    head = (scope,url, params = {}, extraheader = {}, constructor = null ) ->
+      action(scope,'HEAD',url,params,extraheader,null,constructor)
+
 
     {
       get: get
+      head: head
     }
 ])
