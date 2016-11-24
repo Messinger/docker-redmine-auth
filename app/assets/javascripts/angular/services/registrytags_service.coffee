@@ -35,6 +35,8 @@
           _digest = response.headers('docker-content-digest')
 
           deferred.resolve({digest: _digest, data: _list,token: beartoken})
+        (error) ->
+          deferred.reject(error)
       )
       deferred.promise
 

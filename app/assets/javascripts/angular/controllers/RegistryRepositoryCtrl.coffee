@@ -30,6 +30,7 @@
         (tags) ->
           $scope.manifests = tags
         (errors) ->
+          $scope.manifests = ""
           console.log errors
       )
 
