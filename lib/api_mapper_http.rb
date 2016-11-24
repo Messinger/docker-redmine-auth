@@ -45,7 +45,11 @@ class ApiMapperHttp
     response = self.class.send(@method,@resource_uri,options)
 
     if response.headers['content-type'].start_with?('application/json')
-      resbody = JSON.parse(response.body)
+      if response.body.blank?
+        resbody = {}
+      else
+        resbody = JSON.parse(response.body)
+      end
     else
       resbody = response.body
     end
