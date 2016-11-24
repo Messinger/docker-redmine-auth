@@ -6,10 +6,11 @@ initialRequest = true
   "registryloginService"
   "registrytokenService"
   "$q"
-  "$location"
+  "$state"
+  "$stateParams"
   "$rootScope"
   "$cookies"
-  ($scope,registrydataService,registryloginService,registrytokenService,$q,$location,$rootScope,$cookies) ->
+  ($scope,registrydataService,registryloginService,registrytokenService,$q,$state,$stateParams,$rootScope,$cookies) ->
 
       scopeDestroyed = false
       authRequired = false
@@ -44,8 +45,7 @@ initialRequest = true
               authRequired = true
               $rootScope.loginback = '/'
               if $rootScope.globals == undefined || $rootScope.globals.currentUser == undefined
-                $location.path('/login')
-
+                $state.go("login")
         )
       updatestatusmessage()
 

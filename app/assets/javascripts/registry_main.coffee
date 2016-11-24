@@ -53,4 +53,15 @@
       }
     }
     $stateProvider.state(repositoryView)
+
+    loginView = {
+      name: "login"
+      url: "/Login"
+      templateUrl: "templates/login.html"
+      parent: mainLayout
+      params: {
+        trackingName: "login"
+      }
+    }
+    $stateProvider.state(loginView)
 ])
