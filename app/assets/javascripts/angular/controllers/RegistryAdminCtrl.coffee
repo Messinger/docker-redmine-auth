@@ -16,7 +16,7 @@ initialRequest = true
       authRequired = false
       $scope.statusmessage = ""
       roottoken = undefined
-      $scope.loggedIn = false
+      $rootScope.loggedIn = false
       if initialRequest
         initialRequest = false
         globaldata = $cookies.getObject('dockeradmin')
@@ -24,7 +24,7 @@ initialRequest = true
           $rootScope.globals = globaldata
 
       if $rootScope.globals != undefined  && $rootScope.globals.currentUser != undefined
-        $scope.loggedIn = true && authRequired == false
+        $rootScope.loggedIn = true && authRequired == false
 
       $scope.$on('$stateLoggedout', (event) ->
         $scope.loggedIn = false

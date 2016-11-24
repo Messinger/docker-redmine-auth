@@ -44,11 +44,15 @@
       }
       $cookies.putObject('dockeradmin', $rootScope.globals)
 
+    loggedIn = () ->
+      true
+
     {
       getLoginStatus: getLoginStatus
       clearCredentials: clearCredentials
       setCredentials: setCredentials
       login: setCredentials
+      loggedIn: loggedIn
     }
 
   ])

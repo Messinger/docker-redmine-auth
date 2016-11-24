@@ -21,5 +21,7 @@
     $scope.logout = () ->
       registryloginService.clearCredentials()
       $rootScope.$broadcast('$stateLoggedout')
+      $rootScope.loggedIn = false
       $state.go("registryOverview")
+
 ]
