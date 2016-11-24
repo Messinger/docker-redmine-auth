@@ -46,7 +46,7 @@
               }
               deferred.reject(res)
             else
-              if counter == 0 && $rootScope.globals != undefined && $rootScope.globals.currentUser != undefined
+              if counter == 0 && $rootScope.globals != undefined && $rootScope.globals.currentUser != undefined && response.status == 401
                 counter++
                 AuthHeader = response.headers()['www-authenticate']
                 registrytokenService.create_token(AuthHeader).then(
@@ -58,7 +58,7 @@
                 )
               else
                 res = {
-                  error: response.data["errors"][0]
+                  error: response.statusText
                   status: response.status
                   headers: response.headers()
                 }
