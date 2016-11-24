@@ -4,11 +4,9 @@
     </div>
 
     <div class="col-l-4 col-s-12" >
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="tag in tags">
-                <div ng-click="listManifests(tag)">{{tag}}</div>
-            </li>
-        </ul>
+        <div class="list-group">
+            <button type="button" class="list-group-item" ng-repeat="tag in tags" ng-click="listManifests(tag)">{{tag}}</button>
+        </div>
     </div>
 
     <div class="col-l-4 col-s-12" >
