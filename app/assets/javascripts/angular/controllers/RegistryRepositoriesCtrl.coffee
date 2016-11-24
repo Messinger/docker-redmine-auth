@@ -2,9 +2,8 @@
   "$scope"
   "registrydataService"
   "repositoriesService"
-  "$location"
   "$q"
-  ($scope,registrydataService,repositoriesService,$location,$q) ->
+  ($scope,registrydataService,repositoriesService,$q) ->
 
     getlist = () ->
       deferred = $q.defer()

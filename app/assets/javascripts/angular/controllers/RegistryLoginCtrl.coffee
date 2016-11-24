@@ -3,11 +3,12 @@
   "$scope"
   "registrydataService"
   "registryloginService"
+  "mainService"
   "$q"
   "$state"
   "$stateParams"
   "$rootScope"
-  ($scope,registrydataService,registryloginService,$q,$state,$stateParams,$rootScope) ->
+  ($scope,registrydataService,registryloginService,mainService,$q,$state,$stateParams,$rootScope) ->
 
     $scope.error = ''
 

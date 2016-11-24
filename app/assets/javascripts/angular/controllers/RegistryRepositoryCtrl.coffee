@@ -2,11 +2,11 @@
   "$scope"
   "registrydataService"
   "registrytagsService"
-  "$location"
+  "mainService"
   "$state"
   "$stateParams"
   "$q"
-  ($scope,registrydataService,registrytagsService,$location,$state,$stateParams,$q) ->
+  ($scope,registrydataService,registrytagsService,mainService,$state,$stateParams,$q) ->
 
     if $stateParams.repository == ""
       $state.go("registryOverview")
