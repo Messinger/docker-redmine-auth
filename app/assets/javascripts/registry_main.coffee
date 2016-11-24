@@ -45,7 +45,7 @@
 
     repositoryView = {
       name: "repositoryView"
-      url: "/Repository"
+      url: "/Repository/:repository"
       templateUrl: "templates/repository.html"
       parent: mainLayout
       params: {
