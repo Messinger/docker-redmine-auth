@@ -13,6 +13,8 @@
 
       _head = {}
 
+      beartoken = registrytokenService.getToken("/")
+
       docheck = () ->
         registrydataService.get(beartoken,'/').then(
           (response) ->
@@ -32,11 +34,13 @@
 
     clearCredentials = () ->
       $rootScope.globals = undefined
+      $rootScope.tokens = {}
       $cookies.remove('dockeradmin')
 
     setCredentials = (user,password) ->
       authdata = Base64.encode(user + ':' + password)
       $rootScope.globals = {
+        tokens: {}
         currentUser: {
           username: user
           authdata: authdata

@@ -9,6 +9,17 @@
     }
 
 
+    setToken = (url,token) ->
+      if $rootScope.tokens == undefined
+        $rootScope.tokens = {}
+      $rootScope.tokens[url] = token
+
+    getToken = (url) ->
+      if $rootScope.tokens == undefined
+        undefined
+      else
+        $rootScope.tokens[url]
+
     bearer_to_parts = (bearer) ->
       #'Bearer realm="http://localhost:3000/auth.json",service="Docker registry'
 
@@ -70,5 +81,7 @@
     {
       create_token: create_token
       bearer_to_parts: bearer_to_parts
+      setToken: setToken
+      getToken: getToken
     }
 ])

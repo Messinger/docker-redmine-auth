@@ -1,8 +1,8 @@
 @registryadmin.service('registrytagsService',[
   "registrydataService"
-  "$http"
+  "registrytokenService"
   "$q"
-  (registrydataService,$http, $q) ->
+  (registrydataService,registrytokenService, $q) ->
 
     listTags = (repository,beartoken,start,max) ->
       deferred = $q.defer()
@@ -10,9 +10,12 @@
         _p = {n: max, last: start}
       else
         _p = null
-      tags = registrydataService.get(beartoken,"/#{repository}/tags/list",_p)
+      uri = "/#{repository}/tags/list"
+      beartoken = registrytokenService.getToken("read #{repository}")
+      tags = registrydataService.get(beartoken,uri,_p)
       tags.then(
         (response) ->
+          registrytokenService.setToken("read #{repository}",registrytokenService.getToken(uri))
           _list = response.data
           deferred.resolve(_list)
       )
@@ -24,14 +27,14 @@
         _p = {n: max, last: start}
       else
         _p = null
-
+      beartoken = registrytokenService.getToken("read #{repository}")
       manifests = registrydataService.get(beartoken,"/#{repository}/manifests/#{tagordigest}",_p,{Accept: "application/vnd.docker.distribution.manifest.v2+json"})
       manifests.then(
         (response) ->
           _list = response.data
           _digest = response.headers('docker-content-digest')
 
-          deferred.resolve({digest: _digest, data: _list})
+          deferred.resolve({digest: _digest, data: _list,token: beartoken})
       )
       deferred.promise
 

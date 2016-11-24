@@ -54,6 +54,7 @@
                     _token = response
                     unless _token == undefined
                       beartoken = _token.token
+                      registrytokenService.setToken(urlParts[0],beartoken)
                     doaction()
                 )
               else

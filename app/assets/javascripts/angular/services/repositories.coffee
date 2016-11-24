@@ -1,9 +1,9 @@
 @registryadmin.service('repositoriesService',[
   "registrydataService"
-  "$http"
+  "registrytokenService"
   "$rootScope"
   "$q"
-  (registrydataService,$http, $rootScope, $q) ->
+  (registrydataService,registrytokenService, $rootScope, $q) ->
 
     getRepositories = (beartoken,start,max) ->
       deferred = $q.defer()
@@ -11,6 +11,9 @@
         _p = {n: max, last: start}
       else
         _p = null
+
+      beartoken = registrytokenService.getToken("/_catalog")
+
       registries = registrydataService.get(beartoken,'/_catalog',_p)
       registries.then(
         (response) ->
