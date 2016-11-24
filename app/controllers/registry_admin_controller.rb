@@ -17,7 +17,7 @@ class RegistryAdminController < ApplicationController
 
     debug _pars
 
-    _h,_r = ApiMapperHttp.new(_method,_path,{:authtoken => _auth},_pars, {'Accept' => 'application/json'}).doaction
+    _h,_r = ApiMapperHttp.new(_method,_path,{:authtoken => _auth},_pars, {'Accept' => _headers[:accept]}).doaction
 
     _rheaders = _h.headers.as_json.merge(response.headers)
 
