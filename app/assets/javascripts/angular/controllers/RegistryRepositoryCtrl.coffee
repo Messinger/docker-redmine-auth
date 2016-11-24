@@ -16,14 +16,21 @@
 
     $scope.repository = $stateParams.repository
 
+    $scope.manifests = undefined
+    $scope.manifests_errors = undefined
+    $scope.tagserrors = undefined
+    $scope.tags = undefined
+
     listTags = () ->
       tags = registrytagsService.listTags($scope.repository,0,0)
       tags.then(
         (tags) ->
           $scope.tags = tags['tags']
+          $scope.tagserrors = undefined
         (errors) ->
+          $scope.tags = undefined
+          $scope.tagserrors = errors
           console.log errors
-
       )
 
     listTags()
@@ -33,8 +40,10 @@
       tags.then(
         (tags) ->
           $scope.manifests = tags
+          $scope.manifests_errors = undefined
         (errors) ->
-          $scope.manifests = ""
+          $scope.manifests = undefined
+          $scope.manifests_errors = errors
           console.log errors
       )
 

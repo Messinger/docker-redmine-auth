@@ -18,6 +18,8 @@
           registrytokenService.setToken("read #{repository}",registrytokenService.getToken(uri))
           _list = response.data
           deferred.resolve(_list)
+        (error) ->
+          deferred.reject(error)
       )
       deferred.promise
 

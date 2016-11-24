@@ -5,14 +5,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6 col-md-3" >
+        <div class="col-xs-6 col-md-3" ng-if="tags">
             <div class="list-group">
                 <button type="button" class="list-group-item" ng-repeat="tag in tags" ng-click="listManifests(tag)">{{tag}}</button>
             </div>
         </div>
 
-        <div class="col-xs-12 col-md-9" >
-            {{manifests}}
+        <div class="col-xs-6 col-md-3" ng-if="tagserrors">
+            {{tagserrors.error}}
         </div>
+
+        <div class="col-xs-12 col-md-9" ng-if="manifests">
+         manifest   {{manifests}}
+        </div>
+
+        <div class="col-xs-12 col-md-9" ng-if="manifests_errors">
+            {{manifests_errors.error}}
+        </div>
+
+
     </div>
 </div>
