@@ -31,7 +31,11 @@ class RegistryAdminController < ApplicationController
     response.headers.delete('content-length')
     debug response.headers.inspect
 
-    render :json => _r, :status => _h.code, :content_type => _h.headers['content-type']
+    if _r.nil?
+      render :nothing => true, :status => _h.code, :content_type => _h.headers['content-type']
+    else
+      render :json => _r, :status => _h.code, :content_type => _h.headers['content-type']
+    end
   end
 
   def auth_mapper

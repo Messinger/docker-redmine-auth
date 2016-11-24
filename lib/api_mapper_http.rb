@@ -46,7 +46,7 @@ class ApiMapperHttp
 
     if response.headers['content-type'].start_with?('application/json')
       if response.body.blank?
-        resbody = {}
+        resbody = nil
       else
         resbody = JSON.parse(response.body)
       end
