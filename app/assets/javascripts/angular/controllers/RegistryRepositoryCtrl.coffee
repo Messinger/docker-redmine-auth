@@ -10,6 +10,10 @@
 
     if $stateParams.repository == ""
       $state.go("registryOverview")
+
+    if mainService.isLoggedIn()
+      authRequired = false
+
     $scope.repository = $stateParams.repository
 
     listTags = () ->

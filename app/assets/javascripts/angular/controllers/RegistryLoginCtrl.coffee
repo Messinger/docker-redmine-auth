@@ -16,8 +16,6 @@
       registryloginService.clearCredentials()
       registryloginService.setCredentials($scope.username, $scope.password)
       $state.go("registryOverview")
-#      $rootScope.loginback = undefined
-#      $location.path(back) unless back == undefined
 
     $scope.logout = () ->
       registryloginService.clearCredentials()

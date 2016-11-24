@@ -9,24 +9,18 @@ initialRequest = true
   "$state"
   "$stateParams"
   "$rootScope"
-  "$cookies"
-  ($scope,registrydataService,registryloginService,registrytokenService,$q,$state,$stateParams,$rootScope,$cookies) ->
+  "mainService"
+  ($scope,registrydataService,registryloginService,registrytokenService,$q,$state,$stateParams,$rootScope,mainService) ->
 
       scopeDestroyed = false
       authRequired = false
       $scope.statusmessage = ""
-      $rootScope.loggedIn = false
-      if initialRequest
-        initialRequest = false
-        globaldata = $cookies.getObject('dockeradmin')
-        if $rootScope.globals == undefined && globaldata != undefined
-          $rootScope.globals = globaldata
 
-      if $rootScope.globals != undefined  && $rootScope.globals.currentUser != undefined
-        $rootScope.loggedIn = true && authRequired == false
+
+      if mainService.isLoggedIn()
+        authRequired = false
 
       $scope.$on('$stateLoggedout', (event) ->
-        $scope.loggedIn = false
         updatestatusmessage()
       )
 
