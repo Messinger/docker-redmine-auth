@@ -2,10 +2,12 @@
   "registrytokenService"
   '$http'
   "$rootScope"
+  "csrfTokenService"
   "$q"
-  (registrytokenService,$http,$rootScope,$q) ->
+  (registrytokenService,$http,$rootScope,csrfTokenService,$q) ->
     standardheaders = {
-      "Accept": "application/json",
+      "Accept": "application/json"
+      "X-CSRF-Token": csrfTokenService
     }
 
     dockerapi = docker_admin_host+'/v2'

@@ -1,11 +1,13 @@
 @registryadmin.service('registrytokenService',[
+  "csrfTokenService"
   '$http'
   "$q"
   "$rootScope"
-  ($http,$q,$rootScope) ->
+  (csrfTokenService,$http,$q,$rootScope) ->
     headers = {
       "Accept": "application/json"
       "X-Requested-With": 'XMLHttpRequest'
+      "X-CSRF-Token": csrfTokenService
     }
 
 
