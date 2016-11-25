@@ -1,7 +1,7 @@
 @registryadmin.directive("repositoriesList",[
   () ->
     {
-      templateUrl: "templates/partials/repositories-list.html"
+      templateUrl: "views/partials/repositories-list.html"
       scope: true
       link: (scope,el,attr) ->
         angular.extend(scope, scope.$eval(attr.repositoriesList))

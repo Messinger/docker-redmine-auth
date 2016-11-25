@@ -17,15 +17,15 @@
     mainLayout = {
       name: "mainLayout"
       abstract: true
-      templateUrl: "templates/main.html"
+      templateUrl: "views/main.html"
     }
 
     $stateProvider.state(mainLayout)
 
     registryOverview = {
       name: "registryOverview"
-      url: "/Registry"
-      templateUrl: "templates/home.html"
+      url: "/admin/Registry"
+      templateUrl: "views/home.html"
       parent: mainLayout
       params: {}
     }
@@ -43,10 +43,22 @@
     }
     $stateProvider.state(home)
 
+    home_admin = {
+      name: "home_admin"
+      url: "/admin"
+      params: {
+        trackingName: null
+      }
+      controller: ["$state", ($state) ->
+        $state.go(registryOverview)
+      ]
+    }
+    $stateProvider.state(home_admin)
+
     repositoryView = {
       name: "repositoryView"
-      url: "/Repository/:repository"
-      templateUrl: "templates/repository.html"
+      url: "/admin/Repository/:repository"
+      templateUrl: "views/repository.html"
       parent: mainLayout
       params: {
         repository: ""
@@ -56,8 +68,8 @@
 
     loginView = {
       name: "login"
-      url: "/Login"
-      templateUrl: "templates/login.html"
+      url: "/admin/Login"
+      templateUrl: "views/login.html"
       parent: mainLayout
       params: {
         trackingName: "login"
