@@ -16,13 +16,14 @@
         </div>
 
         <div class="col-xs-12 col-md-9" ng-if="manifests">
-         manifest   {{manifests}}
+          <manifest-detail></manifest-detail>
         </div>
 
-        <div class="col-xs-12 col-md-9" ng-if="manifests_errors">
-            {{manifests_errors.error}}
+        <div  class="col-xs-12 col-md-9" ng-if="manifests_errors">
+            <div class="uib-alert" ng-class="'alert-danger'">
+                {{manifests_errors.error}}
+            </div>
         </div>
-
 
     </div>
 </div>
