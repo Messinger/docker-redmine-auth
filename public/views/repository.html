@@ -12,7 +12,9 @@
         </div>
 
         <div class="col-xs-6 col-md-3" ng-if="tagserrors">
-            {{tagserrors.error}}
+            <div class="uib-alert" ng-class="'alert-danger'">
+             {{tagserrors.error}}
+            </div>
         </div>
 
         <div class="col-xs-12 col-md-9" ng-if="manifests">
