@@ -48,4 +48,7 @@
       )
 
     $scope.listManifests = listManifests
+
+    $scope.prettyDump = (manifests) ->
+      JSON.stringify(manifests,null,'  ')
 ]

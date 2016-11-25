@@ -2,12 +2,35 @@
 <uib-tabset active="activeJustified" justified="true">
     <uib-tab index="0" heading="Baseinfo">
         <div class="row">
-            {{manifests.digest}}
+            <dl class="col-md-12">
+                <dl>
+                    <dt>Digest</dt>
+                    <dd>{{manifests.digest}}</dd>
+                    <dt>Architecture</dt>
+                    <dd>{{manifests.data.architecture}}</dd>
+                    <dt>Schemaversion</dt>
+                    <dd>{{manifests.data.schemaVersion}}</dd>
+                    <dt>Name</dt>
+                    <dd>{{manifests.data.name}}</dd>
+                    <dt>Tag</dt>
+                    <dd>{{manifests.data.tag}}</dd>
+                </dl>
+            </div>
         </div>
 
     </uib-tab>
-    <uib-tab index="1" heading="SJ">Short Labeled Justified content</uib-tab>
+    <uib-tab index="1" heading="Layers">
+        <div class="col-md-12">
+            <div class="list-group">
+                <li class="list-group-item" ng-repeat="layer in manifests.data.fsLayers">{{layer.blobSum}}</li>
+            </div>
+        </div>
+    </uib-tab>
     <uib-tab index="2" heading="Full dump">
-        {{manifests}}
+        <div class="col-md-12">
+            <pre>
+            {{prettyDump(manifests)}}
+            </pre>
+        </div>
     </uib-tab>
 </uib-tabset>
