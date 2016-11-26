@@ -51,4 +51,10 @@
 
     $scope.prettyDump = (manifests) ->
       JSON.stringify(manifests,null,'  ')
+
+    $scope.askDelete = (event,name, tag, digest) ->
+      event.stopPropagation()
+      console.log event
+      console.log "#{name}:#{tag}"
+      console.log digest
 ]

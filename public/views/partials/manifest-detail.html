@@ -2,7 +2,7 @@
 <uib-tabset active="activeJustified" justified="true">
     <uib-tab index="0" heading="Baseinfo">
         <div class="row">
-            <dl class="col-md-12">
+            <div class="col-md-12">
                 <dl>
                     <dt>Digest</dt>
                     <dd>{{manifests.digest}}</dd>
@@ -15,6 +15,10 @@
                     <dt>Tag</dt>
                     <dd>{{manifests.data.tag}}</dd>
                 </dl>
+            </div>
+            <div class="col-md-12">
+                <button type="button" class="btn btn-danger" ng-click="askDelete($event, manifests.data.name, manifests.data.tag, manifests.digest)">
+                    Delete this tag</button>
             </div>
         </div>
 
