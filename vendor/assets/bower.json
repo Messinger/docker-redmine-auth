@@ -9,6 +9,7 @@
     "angular-loader": "latest",
     "angular-cookies": "latest",
     "bootstrap-sass-official": "latest",
-    "angular-ui-router": "latest"
+    "angular-ui-router": "latest",
+    "jquery-modal": "latest"
   }
 }

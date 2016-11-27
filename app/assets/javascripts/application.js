@@ -12,6 +12,7 @@
 //
 
 //= require jquery/dist/jquery
+//= require jquery-modal/jquery.modal
 //= require angular/angular
 //= require angular-cookies/angular-cookies
 //= require angular-loader/angular-loader
@@ -21,6 +22,7 @@
 //= require angular-ui-router/release/angular-ui-router
 //= require angular-bootstrap/ui-bootstrap
 //= require angular-bootstrap/ui-bootstrap-tpls
+
 //= require registry_main
 
 //= require_tree .
