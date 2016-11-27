@@ -28,6 +28,7 @@
               scope.template = template
               $timeout(() ->
                 element.modal()
+                true
               )
             )
           )
@@ -35,14 +36,21 @@
         modalService.on("closeDialog", () ->
           retVal = false
           element.modal("hide")
+          retVal
         )
 
         scope.confirm = () ->
           retVal = true
           element.modal("hide")
+          retVal
 
         scope.cancel = () ->
           retVal = false
           element.modal("hide")
+          retVal
+
+        element.on("hidden.tc.modeal", () ->
+          modalService.hasClosed(retVal)
+        )
       }
 ])
