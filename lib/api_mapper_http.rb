@@ -6,7 +6,7 @@ require 'kuxdo'
 class ApiMapperHttp
   include HTTParty
   include RestExceptions
-  extend Kuxdo
+  include Kuxdo
 
   #debug_output $stdout
   no_follow(true)
@@ -42,7 +42,16 @@ class ApiMapperHttp
       end
     end
 
-    response = self.class.send(@method,@resource_uri,options)
+    begin
+      response = self.class.send(@method,@resource_uri,options)
+    rescue Errno::ECONNREFUSED => ex
+      error ex
+      raise RestExceptions::RestServiceUnavailableException.new("Registry not online")
+    rescue Errno::TimeoutError => ex
+      error ex
+      RestExceptions::RestServiceUnavailableException.new("Registry not answering")
+    end
+
 
     if response.headers['content-type'].start_with?('application/json')
       if response.body.blank?
