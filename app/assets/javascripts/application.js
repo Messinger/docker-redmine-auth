@@ -12,7 +12,6 @@
 //
 
 //= require jquery/dist/jquery
-//= require jquery-modal/jquery.modal
 //= require angular/angular
 //= require angular-cookies/angular-cookies
 //= require angular-loader/angular-loader

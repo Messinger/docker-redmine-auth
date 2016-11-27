@@ -7,5 +7,4 @@ asset 'angular-loader'
 asset 'angular-cookies'
 asset 'bootstrap-sass-official'
 asset 'angular-ui-router'
-asset 'jquery-modal'
 # vim: ft=ruby
