@@ -3,10 +3,11 @@
   "registrydataService"
   "registrytagsService"
   "mainService"
+  "modalService"
   "$state"
   "$stateParams"
   "$q"
-  ($scope,registrydataService,registrytagsService,mainService,$state,$stateParams,$q) ->
+  ($scope,registrydataService,registrytagsService,mainService,modalService,$state,$stateParams,$q) ->
 
     if $stateParams.repository == ""
       $state.go("registryOverview")
@@ -57,4 +58,22 @@
       console.log event
       console.log "#{name}:#{tag}"
       console.log digest
+      modalService.openConfirm(
+        {
+          title: "Delete TAG #{tag}"
+          text: "Realy delete this tag"
+          confirm: "Delete"
+          data: {
+            text: {
+              tag: tag
+            }
+          }
+        }
+      ).then(
+        (confirmed) ->
+          if confirmed
+            console.log "ja, löschen"
+          else
+            console.log "nein, doch nicht"
+      )
 ]
