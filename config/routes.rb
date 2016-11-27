@@ -13,8 +13,8 @@ Rails.application.routes.draw do
 
   resources :registry_admin, :only => :index
 
-  match '/api_mapper/v2', :to => 'registry_admin#api_mapper', :via => [:get]
-  match '/api_mapper/v2/*apiaction', :to => 'registry_admin#api_mapper', :via => [:post,:put,:get,:options,:delete,:head]
+  match '/v2', :to => 'registry_admin#api_mapper', :via => [:get]
+  match '/v2/*apiaction', :to => 'registry_admin#api_mapper', :via => [:post,:put,:get,:options,:delete,:head]
 
   match '/auth_mapper', :to => 'registry_admin#auth_mapper', :via => [:post]
 

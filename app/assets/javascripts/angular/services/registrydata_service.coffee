@@ -10,7 +10,7 @@
       "X-CSRF-Token": csrfTokenService
     }
 
-    dockerapi = docker_admin_host+'/v2'
+    dockerapi = '/v2'
 
     action = (beartoken, method,url,params = {} ,extraheader = {}, data = null,constructor = null) ->
       deferred = $q.defer()
