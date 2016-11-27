@@ -8,8 +8,8 @@
       replace: true
       scope: true
       templateUrl: "views/partials/modal-dialog.html"
-      link: (scope, element) ->
-        element = $(element)
+      link: (scope, theelement) ->
+        element = $(theelement)
         retVal = undefined
 
         modalService.on("openDialog", (event, options) ->
@@ -32,7 +32,6 @@
             )
           )
         )
-
         modalService.on("closeDialog", () ->
           retVal = false
           element.modal("hide")
