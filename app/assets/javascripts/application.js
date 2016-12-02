@@ -12,16 +12,16 @@
 //
 
 //= require jquery/dist/jquery
+//= require bootstrap-sass-official/assets/javascripts/bootstrap
 //= require angular/angular
+//= require angular-bootstrap/ui-bootstrap
+//= require angular-bootstrap/ui-bootstrap-tpls
 //= require angular-cookies/angular-cookies
 //= require angular-loader/angular-loader
 //= require angular-animate/angular-animate
 //= require angular-resource/angular-resource
 //= require angular-route/angular-route
 //= require angular-ui-router/release/angular-ui-router
-//= require angular-bootstrap/ui-bootstrap
-//= require angular-bootstrap/ui-bootstrap-tpls
-
+//= require angular-modal-service/dst/angular-modal-service
 //= require registry_main
-
 //= require_tree .
