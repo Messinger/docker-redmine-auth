@@ -1,7 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 
-@registryadmin = angular.module('registryadmin',['ngResource','ngCookies','ui.router','ui.bootstrap'])
+@registryadmin = angular.module('registryadmin',['ngResource','ngCookies','ui.router','ui.bootstrap','angularModalService'])
 
 @registryadmin.config([
 

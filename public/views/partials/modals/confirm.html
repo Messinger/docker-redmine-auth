@@ -1,9 +1,7 @@
-<div class="modal-content">
-    <button type="button" class="close" data-dismiss="modal">
-        <span aria-hidden="true">x</span>
-        <span class="sr-only" translate="CLOSE"></span>
-    </button>
-    <div class="modal-header">
+<div class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
         <h4 class="modal-title">
             {{ dialog.title }}
         </h4>
@@ -17,4 +15,7 @@
         <button type="button" class="btn btn-default" ng-click="cancel()">{{ dialog.cancel }}</button>
         <button type="button" class="btn btn-default" ng-click="confirm()">{{ dialog.confirm }}</button>
     </div>
+</div>
+
+</div>
 </div>
