@@ -1,18 +1,18 @@
 {
   "name": "angular-loader",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "license": "MIT",
   "main": "./angular-loader.js",
   "ignore": [],
   "dependencies": {
-    "angular": "1.5.8"
+    "angular": "1.5.9"
   },
   "homepage": "https://github.com/angular/bower-angular-loader",
-  "_release": "1.5.8",
+  "_release": "1.5.9",
   "_resolution": {
     "type": "version",
-    "tag": "v1.5.8",
-    "commit": "449fb22114bf6b383686badc4cbbad27fcc6a211"
+    "tag": "v1.5.9",
+    "commit": "1073eb55dfa8956a09765f4329cf8284115c19cb"
   },
   "_source": "https://github.com/angular/bower-angular-loader.git",
   "_target": "*",
