@@ -13,8 +13,6 @@
 
 //= require jquery/dist/jquery
 //= require bootstrap-sass-official/assets/javascripts/bootstrap
-//= require sb-admin-2
-//= require metisMenu
 //= require angular/angular
 //= require angular-bootstrap/ui-bootstrap
 //= require angular-bootstrap/ui-bootstrap-tpls
