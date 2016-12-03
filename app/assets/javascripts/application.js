@@ -12,7 +12,7 @@
 //
 
 //= require jquery/dist/jquery
-//= require bootstrap-sass-official/assets/javascripts/bootstrap
+//= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
 //= require sb-admin-2
 //= require metisMenu
 //= require angular/angular
