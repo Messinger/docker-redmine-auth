@@ -42,9 +42,23 @@
       )
       deferred.promise
 
+    deleteManifest = (repository,digest) ->
+      deferred = $q.defer()
+      beartoken = registrytokenService.getToken("write #{repository}")
+      result = registrydataService.del(beartoken,"/#{repository}/manifests/#{digest}",null, {Accept: "application/vnd.docker.distribution.manifest.v2+json"})
+      result.then(
+        (response) ->
+          console.log response
+          deferred.resolve(response)
+        (error) ->
+          console.log error
+          deferred.reject(error)
+      )
+
     {
       listTags: listTags
       listManifests: listManifests
+      deleteManifest: deleteManifest
     }
 ])
 

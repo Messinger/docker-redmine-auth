@@ -38,9 +38,12 @@
 
     listManifests = (tag) ->
       tags = registrytagsService.listManifests($scope.repository,tag,0,0)
+      $scope.selected_tag = null
+
       tags.then(
         (tags) ->
           $scope.manifests = tags
+          $scope.selected_tag = tag
           $scope.manifests_errors = undefined
         (errors) ->
           $scope.manifests = undefined
@@ -56,11 +59,11 @@
     $scope.askDelete = (event,name, tag, digest) ->
       event.stopPropagation()
       console.log event
-      console.log "#{name}:#{tag}"
+      console.log "#{$scope.repository}:#{tag}"
       console.log digest
       modalService.openConfirm(
         {
-          title: "Delete TAG #{tag}"
+          title: "Delete TAG #{$scope.selected_tag}"
           text: "Realy delete this tag"
           confirm: "Delete"
           data: {
@@ -73,6 +76,11 @@
         (confirmed) ->
           if confirmed
             console.log "ja, löschen"
+            registrytagsService.deleteManifest($scope.repository,digest).then(
+              (result) ->
+                $scope.manifests = undefined
+                listTags()
+            )
           else
             console.log "nein, doch nicht"
       )

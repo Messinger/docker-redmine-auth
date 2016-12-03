@@ -77,9 +77,13 @@
     head = (scope,url, params = {}, extraheader = {}, constructor = null ) ->
       action(scope,'HEAD',url,params,extraheader,null,constructor)
 
+    del = (scope,url,params = {}, extraheader = {} ) ->
+      action(scope,'DELETE',url,params,extraheader,null, null)
+
 
     {
       get: get
       head: head
+      del: del
     }
 ])
