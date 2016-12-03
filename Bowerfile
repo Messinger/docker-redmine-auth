@@ -1,5 +1,4 @@
 asset 'angular'
-asset 'angular-modal-service'
 asset 'angular-animate'
 asset 'angular-resource'
 asset 'angular-route'
