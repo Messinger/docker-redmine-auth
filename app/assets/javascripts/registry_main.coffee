@@ -24,7 +24,7 @@
 
     registryOverview = {
       name: "registryOverview"
-      url: "/admin/Registry"
+      url: "/browse/Registry"
       templateUrl: "views/home.html"
       parent: mainLayout
       params: {}
@@ -45,7 +45,7 @@
 
     home_admin = {
       name: "home_admin"
-      url: "/admin"
+      url: "/browse"
       params: {
         trackingName: null
       }
@@ -57,7 +57,7 @@
 
     repositoryView = {
       name: "repositoryView"
-      url: "/admin/Repository/:repository"
+      url: "/browse/Repository/:repository"
       templateUrl: "views/repository.html"
       parent: mainLayout
       params: {
@@ -68,7 +68,7 @@
 
     loginView = {
       name: "login"
-      url: "/admin/Login"
+      url: "/browse/Login"
       templateUrl: "views/login.html"
       parent: mainLayout
       params: {
