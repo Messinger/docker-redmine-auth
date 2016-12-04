@@ -1,0 +1,2 @@
+module RegistryAdminHelper
+end
