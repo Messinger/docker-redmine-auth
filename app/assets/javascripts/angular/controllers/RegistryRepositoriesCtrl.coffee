@@ -2,8 +2,9 @@
   "$scope"
   "registrydataService"
   "repositoriesService"
+  "registrytagsService"
   "$q"
-  ($scope,registrydataService,repositoriesService,$q) ->
+  ($scope,registrydataService,repositoriesService,registrytagsService,$q) ->
 
     getlist = () ->
       deferred = $q.defer()
@@ -15,6 +16,7 @@
     $scope.listmax = 0
 
     buildList = () ->
+      $scope.search_error = null
       _r = repositoriesService.getRepositories($scope.liststart,$scope.listmax)
       _r.then(
         (repositories) ->
@@ -30,5 +32,21 @@
     )
 
     $scope.buildList = buildList
+
+    $scope.searchval = ''
+    $scope.search_error = null
+
+    $scope.searchRepository = () ->
+      console.log "Search ... #{$scope.searchval}"
+      tags = registrytagsService.listTags($scope.searchval,0,0)
+      tags.then(
+        (success) ->
+          $scope.search_error = null
+          $scope.repositories = [$scope.searchval]
+        (error) ->
+          console.log error
+          $scope.search_error = error
+          $scope.repositories = []
+      )
 
 ]

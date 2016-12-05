@@ -1,9 +1,5 @@
-<div class="row">
-    <div class="col-xs-12 col-md-4">
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="repo in repositories">
-                <a ui-sref="repositoryView({repository: repo})">{{repo}}</a>
-            </li>
-        </ul>
-    </div>
-</div>
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="repo in repositories">
+        <a ui-sref="repositoryView({repository: repo})">{{repo}}</a>
+    </li>
+</ul>
