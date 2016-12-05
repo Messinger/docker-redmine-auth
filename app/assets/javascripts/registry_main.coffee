@@ -25,7 +25,7 @@
     registryOverview = {
       name: "registryOverview"
       url: "/browse/Registry"
-      templateUrl: "views/home.html"
+      templateUrl: "views/repositories.html"
       parent: mainLayout
       params: {}
     }
