@@ -51,6 +51,7 @@ ADD app/controllers/application_controller.rb $APP_HOME/app/controllers/
 RUN cd $APP_HOME && rm -rf public/assets && rake assets:precompile DATABASE_URL=sqlite3:tmp/dummy.db SECRET_KEY_BASE=dummy
 
 ADD . $APP_HOME
+RUN cd $APP_HOME && rake db:migrate
 RUN chown -R nobody:nogroup $APP_HOME
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
