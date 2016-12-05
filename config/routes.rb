@@ -18,8 +18,8 @@ Rails.application.routes.draw do
 
   match '/auth_mapper', :to => 'registry_admin#auth_mapper', :via => [:post]
 
-  match '/admin', :to => 'registry_admin#index', :via => [:get,:post,:put,:options,:delete,:head]
-  match '/admin/*a', :to => 'registry_admin#index', :via => [:get,:post,:put,:options,:delete,:head]
+  match '/browse', :to => 'registry_admin#index', :via => [:get,:post,:put,:options,:delete,:head]
+  match '/browse/*a', :to => 'registry_admin#index', :via => [:get,:post,:put,:options,:delete,:head]
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
