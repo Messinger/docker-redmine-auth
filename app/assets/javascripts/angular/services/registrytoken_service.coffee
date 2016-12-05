@@ -11,6 +11,9 @@
     }
 
 
+    clearTokens = () ->
+      $rootScope.tokens = {}
+
     setToken = (url,token) ->
       if $rootScope.tokens == undefined
         $rootScope.tokens = {}
@@ -51,7 +54,7 @@
 
       if bear['url'].startsWith(_loc)
         _h = angular.merge({},headers,{
-          Authorization:authtoken
+          Authorization:"Basic #{authtoken}"
         })
         _h['X-Requested-With']='XMLHttpRequest'
 
@@ -85,5 +88,6 @@
       bearer_to_parts: bearer_to_parts
       setToken: setToken
       getToken: getToken
+      clearTokens:clearTokens
     }
 ])

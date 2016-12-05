@@ -24,7 +24,9 @@
         (errors) ->
           $scope.repositories = null
           console.log errors
-          $scope.repositories = null
+          $scope.search_error = "Registry catalog failed, registry gaved: #{errors['error']}"
+          $scope.repositories = []
+
     )
 
     $scope.$on('$stateReadyToShow', (event) ->
@@ -45,7 +47,7 @@
           $scope.repositories = [$scope.searchval]
         (error) ->
           console.log error
-          $scope.search_error = error
+          $scope.search_error = "Repository status failed, registry said '#{error['error']}'"
           $scope.repositories = []
       )
 

@@ -19,6 +19,8 @@
         (response) ->
           _list = response.data
           deferred.resolve(_list)
+        (error) ->
+          deferred.reject(error)
       )
       deferred.promise
 
