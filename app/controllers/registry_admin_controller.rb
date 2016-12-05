@@ -41,7 +41,7 @@ class RegistryAdminController < ApplicationController
   def auth_mapper
     _p = params[:params]
     _uri = params[:url]
-    auth = {:authtoken => params[:authtoken]}
+    auth = {:authtoken => "Basic #{params[:authtoken]}"}
 
     debug(params)
 
