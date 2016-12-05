@@ -1,6 +1,6 @@
 initialRequest = true
 
-@registryadmin.controller 'RegistryAdminCtrl', [
+@registryadmin.controller 'RegistryBrowseCtrl', [
   "$scope"
   "registrydataService"
   "registryloginService"
@@ -41,5 +41,4 @@ initialRequest = true
                 $state.go("login")
         )
       updatestatusmessage()
-
 ]
