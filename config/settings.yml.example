@@ -52,3 +52,7 @@ auth_modules:
   default:
     - redmine
     - gitlab
+
+# the docker registry the admin area should work on
+docker_admin_host:
+  default: http://localhost:5000

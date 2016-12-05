@@ -8,7 +8,18 @@ Rails.application.routes.draw do
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
+  root 'registry_admin#index'
   get 'auth' => 'auth#index'
+
+  resources :registry_admin, :only => :index
+
+  match '/v2', :to => 'registry_admin#api_mapper', :via => [:get]
+  match '/v2/*apiaction', :to => 'registry_admin#api_mapper', :via => [:post,:put,:get,:options,:delete,:head]
+
+  match '/auth_mapper', :to => 'registry_admin#auth_mapper', :via => [:post]
+
+  match '/browse', :to => 'registry_admin#index', :via => [:get,:post,:put,:options,:delete,:head]
+  match '/browse/*a', :to => 'registry_admin#index', :via => [:get,:post,:put,:options,:delete,:head]
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

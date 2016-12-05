@@ -17,3 +17,5 @@
 .idea
 .ruby-gemset
 .ruby-version
+node_modules
+*.swp

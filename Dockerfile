@@ -1,35 +1,64 @@
-FROM ruby:alpine
+FROM alpine:3.4
 MAINTAINER Rajko Albrecht
-ENV BUILD_PACKAGES="curl-dev ruby-dev build-base" \
-    DEV_PACKAGES="zlib-dev libxml2-dev libxslt-dev tzdata sqlite-dev yaml-dev libstdc++  linux-headers" \
-    RUBY_PACKAGES="ruby ruby-io-console ruby-json yaml nodejs sqlite-libs bash"
-ENV APP_HOME=/srv/docker-redmine-auth \
-    RAILS_ENV=production
 
-WORKDIR $APP_HOME
+RUN apk --no-cache add ruby ruby-irb ruby-json ruby-bigdecimal ruby-rake \
+    ruby-io-console ruby-bundler libstdc++ tzdata postgresql-client nodejs \
+    libxml2 libxslt libgcrypt sqlite-libs pcre curl postgresql bash procps \
+    && cp /usr/bin/pg_dump /usr/bin/pg_restore /tmp/ \
+    && apk del --purge postgresql \
+    && mv /tmp/pg_dump /tmp/pg_restore /usr/bin/ \
+    && echo "gem: --no-document" > /etc/gemrc
+
+ENV APP_HOME /srv/docker-redmine-auth
+
+# Copy just the files for bundle install
+ADD vendor/assets $APP_HOME/vendor/assets
+ADD Gemfile       $APP_HOME/
+ADD Gemfile.lock  $APP_HOME/
+
+ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
+    BUNDLE_IGNORE_MESSAGES=1 \
+    BUNDLE_GITHUB__HTTPS=1 \
+    NOKOGIRI_USE_SYSTEM_LIBRARIES=1 \
+    BUNDLE_FROZEN=1 \
+    BUNDLE_PATH=$APP_HOME/vendor/bundle \
+    BUNDLE_BIN=$APP_HOME/bin \
+    BUNDLE_GEMFILE=$APP_HOME/Gemfile \
+    BUNDLE_WITHOUT=development:benchmark:test
+
+RUN apk --no-cache add --virtual build-dependencies build-base git ruby-dev \
+    curl-dev postgresql-dev libxml2-dev libxslt-dev libgcrypt-dev sqlite-dev libc-dev linux-headers \
+    && bundle install \
+    && apk del --purge build-dependencies
 
 
-RUN apk --update --upgrade add $BUILD_PACKAGES $RUBY_PACKAGES $DEV_PACKAGES && \
-    gem install --no-document bundler && \
-    echo 'gem: --no-document' >> ~/.gemrc && \
-    cp ~/.gemrc /etc/gemrc && \
-    chmod uog+r /etc/gemrc && \
-    bundle config --global build.nokogiri  "--use-system-libraries" && \
-    bundle config --global build.nokogumbo "--use-system-libraries" && \
-    find / -type f -iname \*.apk-new -delete && \
-    rm -rf /var/cache/apk/* && \
-    rm -rf /usr/lib/lib/ruby/gems/*/cache/* && \
-    rm -rf ~/.gem
+RUN apk --no-cache add --virtual passenger-dependencies gcc g++ make \
+    linux-headers curl-dev pcre-dev ruby-dev \
+    && echo "#undef LIBC_HAS_BACKTRACE_FUNC" > /usr/include/execinfo.h \
+    && bundle exec passenger-config install-standalone-runtime --auto \
+    && bundle exec passenger-config build-native-support \
+    && apk del --purge passenger-dependencies
 
-COPY . $APP_HOME
+ENV RAILS_ENV=production PATH=$APP_HOME/bin:$PATH
 
-RUN bundle install --no-cache && rake db:migrate &&\
-    apk --update --upgrade del $BUILD_PACKAGES 
+# Copy just the files needed for assets:precompile
+ADD Rakefile   $APP_HOME/
+ADD config     $APP_HOME/config
+ADD public     $APP_HOME/public
+ADD app/assets $APP_HOME/app/assets
+ADD lib/utils  $APP_HOME/lib/utils
+ADD app/controllers/application_controller.rb $APP_HOME/app/controllers/
+RUN cd $APP_HOME && rm -rf public/assets && rake assets:precompile DATABASE_URL=sqlite3:tmp/dummy.db SECRET_KEY_BASE=dummy
 
-
-EXPOSE 3000
-
+ADD . $APP_HOME
+RUN chown -R nobody:nogroup $APP_HOME
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
 
+USER nobody
+
+WORKDIR $APP_HOME
+
+EXPOSE 3000
 ENTRYPOINT ["/entrypoint.sh"]
+

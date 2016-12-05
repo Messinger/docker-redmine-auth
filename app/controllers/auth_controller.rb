@@ -19,7 +19,13 @@ class AuthController < ApplicationController
       @current_user = user
       debug @current_user.as_json(:except => ['auth'])
     else
-      request_http_basic_authentication
+      if request.headers['X-Requested-With'] == 'XMLHttpRequest'
+        self.headers["WWW-Authenticate"] = %(xBasic realm="Application")
+        self.response_body = "HTTP Basic: Access denied.\n"
+        self.status = 401
+      else
+        request_http_basic_authentication
+      end
     end
 
   end
@@ -68,7 +74,7 @@ class AuthController < ApplicationController
         _temp_actions = []
         @redmine_project_id =  gen_context_name(_scope[1]) unless _scope[1].blank?
         if @redmine_project_id == 'catalog' && _scope[0]=='registry'
-          _temp_actions << '*'
+          _temp_actions << ''
         else
           unless @redmine_project_id.blank?
             if _actions.include? '*'
