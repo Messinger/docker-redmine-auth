@@ -10,6 +10,7 @@
       "X-CSRF-Token": csrfTokenService
     }
 
+    _loc = window.location.protocol+"//"+window.location.host
 
     clearTokens = () ->
       $rootScope.tokens = {}
@@ -50,7 +51,6 @@
 
       bear = bearer_to_parts(bearer)
 
-      _loc = window.location.protocol+"//"+window.location.host
 
       if bear['url'].startsWith(_loc)
         _h = angular.merge({},headers,{

@@ -10,6 +10,12 @@
       "X-CSRF-Token": csrfTokenService
     }
 
+    _loc = window.location.protocol+"//"+window.location.host
+    if window.docker_admin_host == _loc
+      auth_key = "Authorization"
+    else
+      auth_key = "X-Authorization"
+
     dockerapi = '/v2'
 
     action = (beartoken, method,url,params = {} ,extraheader = {}, data = null,constructor = null) ->
@@ -31,9 +37,9 @@
 
       doaction = () ->
         if beartoken != undefined
-          headers['X-Authorization']="Bearer #{beartoken}"
+          headers[auth_key]="Bearer #{beartoken}"
         else
-          delete headers['X-Authorization']
+          delete headers[auth_key]
 
         config['headers'] = headers
         http_result = $http(config)
