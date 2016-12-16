@@ -39,31 +39,39 @@ module Gitlab
       @projects ||= retrieve_projects
     end
 
-    # ensure that project is kind of GitlabProject or identifier
+    # ensure that project is kind of GitlabProject
     def can_write? _project
       return true if Setting.admin_users.include? self.username
-      if @projects_permissions.nil?
-        @projects_permissions = {}
-      end
-      unless @projects_permissions.key?(_project.id)
-        @projects_permissions[_project.id] = retrieve_project_permissions _project.id
-      end
-      @projects_permissions[_project.id].access_level >= 30
+      has_permission_value(_project,30)
     end
 
-    # ensure that project is kind of GitlabProject or identifier
+    # ensure that project is kind of GitlabProject
     def can_read? _project
       return true if Setting.admin_users.include? self.username
-      if @projects_permissions.nil?
-        @projects_permissions = {}
-      end
-      unless @projects_permissions.key?(_project.id)
-        @projects_permissions[_project.id] = retrieve_project_permissions _project.id
-      end
-      @projects_permissions[_project.id].access_level >= 20
+      has_permission_value(_project,20)
     end
 
+    def has_permission_value _project,value
+      projects_permissions(_project).group_access >= value || projects_permissions(_project).project_access >= value
+    end
 
+    def projects_permissions _project
+      @projects_permissions = {} if @projects_permissions.nil?
+      unless @projects_permissions.key?(_project.id)
+        _ga = if _project.permissions.group_access.nil?
+                0
+              else
+                _project.permissions.group_access.access_level
+              end
+        _pa = if _project.permissions.project_access.nil?
+                0
+              else
+                _project.permissions.project_access.access_level
+              end
+        @projects_permissions[_project.id] = PresentationModel.new({:group_access => _ga,:project_access => _pa})
+      end
+      @projects_permissions[_project.id]
+    end
 
     def retrieve_project_permissions project_id
       begin
