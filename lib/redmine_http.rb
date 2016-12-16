@@ -15,7 +15,7 @@ class RedmineHttp
   base_uri Setting.redmine_url
 
   def initialize(resource_uri, authentication={username: nil, password: nil })
-    raise(ArgumentError, "Authentication not a Hash") unless authentication.is_a?(Hash)
+    raise(ArgumentError, "Authentication not a Hash") if !authentication.is_a?(Hash) && !authentication.is_a?(OpenStruct)
     raise(ArgumentError, "Resource_uri not a String") unless resource_uri.is_a?(String)
 
     @logger = Kuxdo::getlogger("#{self.class.logger_name}")
