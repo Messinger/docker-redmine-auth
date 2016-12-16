@@ -72,16 +72,16 @@ class AuthController < ApplicationController
 
       if Setting.full_access_check && !Setting.admin_users.include?(@current_user.login)
         _temp_actions = []
-        @redmine_project_id =  gen_context_name(_scope[1]) unless _scope[1].blank?
-        if @redmine_project_id == 'catalog' && _scope[0]=='registry'
+        docker_project_id =  gen_context_name(_scope[1]) unless _scope[1].blank?
+        if docker_project_id == 'catalog' && _scope[0]=='registry'
           _temp_actions << ''
         else
-          unless @redmine_project_id.blank?
+          unless docker_project_id.blank?
             if _actions.include? '*'
-              _temp_actions << '*' if @current_user.can_read?(@redmine_project_id) && @current_user.can_write?(@redmine_project_id)
+              _temp_actions << '*' if @current_user.can_read?(docker_project_id) && @current_user.can_write?(docker_project_id)
             else
-              _temp_actions << 'pull' if @current_user.can_read? @redmine_project_id
-              _temp_actions << 'push' if @current_user.can_write? @redmine_project_id
+              _temp_actions << 'pull' if @current_user.can_read? docker_project_id
+              _temp_actions << 'push' if @current_user.can_write? docker_project_id
             end
           end
         end
