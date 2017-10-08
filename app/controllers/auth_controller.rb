@@ -72,7 +72,7 @@ class AuthController < ApplicationController
 
       if Setting.full_access_check && !Setting.admin_users.include?(@current_user.login)
         _temp_actions = []
-        docker_project_id =  gen_context_name(_scope[1]) unless _scope[1].blank?
+        docker_project_id =  gen_context_name(_scope[1])
         if docker_project_id == 'catalog' && _scope[0]=='registry'
           _temp_actions << ''
         else
