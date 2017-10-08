@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:latest
 MAINTAINER Rajko Albrecht
 
 RUN apk --no-cache add ruby ruby-irb ruby-json ruby-bigdecimal ruby-rake \
