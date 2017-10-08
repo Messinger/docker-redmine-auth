@@ -32,13 +32,6 @@ RUN apk --no-cache add --virtual build-dependencies build-base git ruby-dev \
     && apk del --purge build-dependencies
 
 
-RUN apk --no-cache add --virtual passenger-dependencies gcc g++ make \
-    linux-headers curl-dev pcre-dev ruby-dev zlib-dev openssl-dev \
-    && echo "#undef LIBC_HAS_BACKTRACE_FUNC" > /usr/include/execinfo.h \
-    && bundle exec passenger-config install-standalone-runtime --auto \
-    && bundle exec passenger-config build-native-support \
-    && apk del --purge passenger-dependencies
-
 ENV RAILS_ENV=production PATH=$APP_HOME/bin:$PATH
 
 # Copy just the files needed for assets:precompile
@@ -59,6 +52,7 @@ RUN chmod 755 /entrypoint.sh
 USER nobody
 
 WORKDIR $APP_HOME
+ENV HOME $APP_HOME
 
 EXPOSE 3000
 ENTRYPOINT ["/entrypoint.sh"]
