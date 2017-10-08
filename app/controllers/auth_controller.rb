@@ -30,12 +30,12 @@ class AuthController < ApplicationController
 
   end
 
-  def check_authentications _user,_password
+  def check_authentications a_user,a_password
     logins = []
 
     Setting.auth_modules.each do |authmodule|
       begin
-        a = Object.const_get(authmodule.camelcase).const_get("#{authmodule.camelcase}User").login(_user,_password)
+        a = Object.const_get(authmodule.camelcase).const_get("#{authmodule.camelcase}User").login(a_user,a_password)
         unless a.nil?
           logins << a
         end
@@ -45,7 +45,7 @@ class AuthController < ApplicationController
     end
 
     if logins.count > 0
-      DockerUser.new _user,logins
+      DockerUser.new a_user,logins
     else
       nil
     end
@@ -63,45 +63,43 @@ class AuthController < ApplicationController
   # this moment without further checks!
   def generate_access
     return {} unless params.key? :scope
-    _scope = params[:scope].split(':')
-    if _scope.blank? || _scope.length != 3
+    scope = params[:scope].split(':')
+    if scope.blank? || scope.length != 3
       # login type / ping - no access check needed
       {}
     else
-      _actions = _scope[2].split(',')
+      actions = scope[2].split(',')
 
       if Setting.full_access_check && !Setting.admin_users.include?(@current_user.login)
-        _temp_actions = []
-        @redmine_project_id =  gen_context_name(_scope[1]) unless _scope[1].blank?
-        if @redmine_project_id == 'catalog' && _scope[0]=='registry'
-          _temp_actions << ''
+        temp_actions = []
+        docker_project_id =  gen_context_name(scope[1])
+        if docker_project_id == 'catalog' && scope[0]=='registry'
+          temp_actions << ''
         else
-          unless @redmine_project_id.blank?
-            if _actions.include? '*'
-              _temp_actions << '*' if @current_user.can_read?(@redmine_project_id) && @current_user.can_write?(@redmine_project_id)
+          unless docker_project_id.blank?
+            if actions.include? '*'
+              temp_actions << '*' if @current_user.can_read?(docker_project_id) && @current_user.can_write?(docker_project_id)
             else
-              _temp_actions << 'pull' if @current_user.can_read? @redmine_project_id
-              _temp_actions << 'push' if @current_user.can_write? @redmine_project_id
+              temp_actions << 'pull' if @current_user.can_read? docker_project_id
+              temp_actions << 'push' if @current_user.can_write? docker_project_id
             end
           end
         end
-        _actions = _temp_actions
+        actions = temp_actions
       else
         # ensure r/w rights, sometimes registry is confused when giving just 'pull'
-        _actions = ['pull','push'] if _actions.include? 'pull'
+        actions = ['pull','push'] if actions.include? 'pull'
       end
-      {:access => [{:type => _scope[0], :name => _scope[1], :actions => _actions }]}
+      {:access => [{:type => scope[0], :name => scope[1], :actions => actions }]}
     end
   end
 
-  private
-
-  def gen_context_name _scope
-    '' if _scope.blank?
-    _r = _scope.split('/')[0..-2].join('/')
-    if _r.blank?
-      _r = _scope.split('/')[0]
+  def gen_context_name a_scope
+    '' if a_scope.blank?
+    result = a_scope.split('/')[0..-2].join('/')
+    if result.blank?
+      result = a_scope.split('/')[0]
     end
-    _r
+    result
   end
 end
