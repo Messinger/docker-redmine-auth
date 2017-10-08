@@ -3,7 +3,7 @@ MAINTAINER Rajko Albrecht
 
 RUN apk --no-cache add ruby ruby-irb ruby-json ruby-bigdecimal ruby-rake \
     ruby-io-console ruby-bundler libstdc++ tzdata postgresql-client nodejs \
-    libxml2 libxslt libgcrypt sqlite-libs pcre curl postgresql bash procps \
+    libxml2 libxslt libgcrypt sqlite-libs pcre curl postgresql bash procps libffi \
     && cp /usr/bin/pg_dump /usr/bin/pg_restore /tmp/ \
     && apk del --purge postgresql \
     && mv /tmp/pg_dump /tmp/pg_restore /usr/bin/ \
@@ -27,13 +27,13 @@ ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
     BUNDLE_WITHOUT=development:benchmark:test
 
 RUN apk --no-cache add --virtual build-dependencies build-base git ruby-dev \
-    curl-dev postgresql-dev libxml2-dev libxslt-dev libgcrypt-dev sqlite-dev libc-dev linux-headers \
+    curl-dev postgresql-dev libxml2-dev libxslt-dev libgcrypt-dev sqlite-dev libffi-dev libc-dev linux-headers \
     && bundle install \
     && apk del --purge build-dependencies
 
 
 RUN apk --no-cache add --virtual passenger-dependencies gcc g++ make \
-    linux-headers curl-dev pcre-dev ruby-dev \
+    linux-headers curl-dev pcre-dev ruby-dev zlib-dev openssl-dev \
     && echo "#undef LIBC_HAS_BACKTRACE_FUNC" > /usr/include/execinfo.h \
     && bundle exec passenger-config install-standalone-runtime --auto \
     && bundle exec passenger-config build-native-support \
