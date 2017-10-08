@@ -47,6 +47,7 @@ ADD . $APP_HOME
 RUN cd $APP_HOME && rake db:migrate
 RUN chown -R nobody:nogroup $APP_HOME
 COPY docker/entrypoint.sh /entrypoint.sh
+COPY docker/production.rb $APP_HOME/config/environments/production.rb
 RUN chmod 755 /entrypoint.sh
 
 USER nobody

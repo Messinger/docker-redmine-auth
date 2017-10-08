@@ -1,5 +1,5 @@
 dockerregistryredmine:
-  image: testauth
+  image: elektritter/dockerregistry-redmine-auth
   environment:
     SECRET_KEY_BASE: a9d231863e26389c19d5ffe9db7e6f309fae3d1be003c50da8ba805dc4c9a9644258e6edd3c10dd4610d720d21101ee76fa1128e5587a903c7c05be280778641
     RAILS_ENV: production
@@ -10,3 +10,4 @@ dockerregistryredmine:
     - ./config/server.crt:/srv/docker-redmine-auth/config/server.crt:ro
     - ./config/server.key:/srv/docker-redmine-auth/config/server.key:ro
     - ./config/settings.yml:/srv/docker-redmine-auth/config/settings.yml:ro
+    - ./config/puma.rb:/srv/docker-redmine-auth/config/puma.rb:ro
