@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
 
   root 'registry_admin#index'
-  get 'auth' => 'auth#index'
+  match '/auth', :to => 'auth#index', :via => [:get,:post]
 
   resources :registry_admin, :only => :index
 
