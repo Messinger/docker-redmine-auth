@@ -51,6 +51,7 @@ gem 'logging-rails', :require => 'logging/rails'
 gem 'jwt', '~> 1.5.6'
 gem 'json-jwt', '~> 1.5.2'
 gem 'puma'
+gem 'unicorn'
 
 # caching
 gem 'redis-rails'

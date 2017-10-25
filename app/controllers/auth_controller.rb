@@ -90,7 +90,9 @@ class AuthController < ApplicationController
         # ensure r/w rights, sometimes registry is confused when giving just 'pull'
         actions = ['pull','push'] if actions.include? 'pull'
       end
-      {:access => [{:type => scope[0], :name => scope[1], :actions => actions }]}
+      res = {:access => [{:type => scope[0], :name => scope[1], :actions => actions }]}
+      logger.info "Access #{res.to_s}"
+      res
     end
   end
 
