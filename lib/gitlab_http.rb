@@ -9,7 +9,7 @@ class GitlabHttp
   extend Kuxdo
 
   STANDARD_HEADER = {'Accept' => 'application/json','Content-Type' => 'application/json; charset=UTF-8'}
-  APIPATH = '/api/v3'
+  APIPATH = '/api/v4'
 
   #debug_output $stdout
   no_follow(true)
