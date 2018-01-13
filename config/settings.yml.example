@@ -38,6 +38,7 @@ full_access_check:
   default: true
 
 admin_users:
+  format: list
   default:
     - admin
 
@@ -49,6 +50,7 @@ rest_proxy_port:
   default:
 
 auth_modules:
+  format: list
   default:
     - redmine
     - gitlab
