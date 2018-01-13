@@ -5,12 +5,12 @@ require 'user_presentation_model'
 module Gitlab
   class GitlabUser < UserPresentationModel
 
-    def self.login _username, _password
+    def self.login(_, apitoken)
 
       begin
         # raise error if token invalid
-        GitlabHttp.new('user',{:accesstoken => _password}).retrieve
-        GitlabUser.new({:accesstoken => _password})
+        GitlabHttp.new('user',{:accesstoken => apitoken}).retrieve
+        GitlabUser.new({:accesstoken => apitoken})
       rescue HttpExceptions::RequestException => e
         raise HttpExceptions::Unauthorized.new
       end
@@ -25,8 +25,8 @@ module Gitlab
       privat_token
     end
 
-    def extra_hash options = {}
-      {:projects => projects.map {|item| item.to_hash(options) }}
+    def extra_hash(options = {})
+      {:projects => projects.map {|item| item.to_hash(options)}}
     end
 
     # identifier is the path! even the last part or the full path
@@ -41,46 +41,48 @@ module Gitlab
     end
 
     # ensure that project is kind of GitlabProject
-    def can_write? _project
+    def can_write?(project)
       return true if Setting.admin_users.include? self.username
-      has_permission_value(_project,30)
+      has_permission_value(project, 30)
     end
 
     # ensure that project is kind of GitlabProject
-    def can_read? _project
+    def can_read?(project)
       return true if Setting.admin_users.include? self.username
-      has_permission_value(_project,20)
+      has_permission_value(project, 20)
     end
 
-    def has_permission_value _project,value
-      projects_permissions(_project).group_access >= value || projects_permissions(_project).project_access >= value
+    def has_permission_value(project, value)
+      projects_permissions(project).group_access >= value || projects_permissions(project).project_access >= value
     end
 
-    def projects_permissions _project
-      @projects_permissions = {} if @projects_permissions.nil?
-      unless @projects_permissions.key?(_project.id)
-        _ga = if _project.permissions.group_access.nil?
-                0
-              else
-                _project.permissions.group_access.access_level
-              end
-        _pa = if _project.permissions.project_access.nil?
-                0
-              else
-                _project.permissions.project_access.access_level
-              end
-        @projects_permissions[_project.id] = PresentationModel.new({:group_access => _ga,:project_access => _pa})
+    def projects_permissions(project)
+      if @projects_permissions.nil?
+        @projects_permissions = {}
       end
-      @projects_permissions[_project.id]
+      unless @projects_permissions.key?(project.id)
+        group_a = if project.permissions.group_access.nil?
+                    0
+                  else
+                    project.permissions.group_access.access_level
+                  end
+        project_a = if project.permissions.project_access.nil?
+                      0
+                    else
+                      project.permissions.project_access.access_level
+                    end
+        @projects_permissions[project.id] = PresentationModel.new({:group_access => group_a, :project_access => project_a})
+      end
+      @projects_permissions[project.id]
     end
 
     def retrieve_project_permissions project_id
       begin
-        _r = GitlabHttp.new("projects/#{project_id}/members",authtoken).retrieve(self.id)
-      rescue => ex
-        _r = {:access_level => 0}
+        result = GitlabHttp.new("projects/#{project_id}/members",authtoken).retrieve(self.id)
+      rescue => _
+        result = {:access_level => 0}
       end
-      GitlabPermission.new _r
+      GitlabPermission.new result
     end
 
     private
@@ -89,13 +91,13 @@ module Gitlab
 
       projects = []
       begin
-        _r = GitlabHttp.new('projects',authtoken).retrieve
+        result = GitlabHttp.new('projects',authtoken).retrieve
 
-        projects = _r.map do |rp|
+        projects = result.map do |rp|
           Gitlab::GitlabProject.new(rp)
         end
-
-      rescue HttpExceptions::RequestException => e
+  
+      rescue HttpExceptions::RequestException => _
         []
       end
 
