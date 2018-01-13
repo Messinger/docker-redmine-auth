@@ -91,12 +91,26 @@ module Gitlab
 
       projects = []
       begin
-        result = GitlabHttp.new('projects',authtoken).retrieve
+        page = 1
+
+        result = []
+
+        stop = false
+
+        until stop
+          curesult = GitlabHttp.new('projects',authtoken).retrieve(nil,{:query => {:order_by => 'id',:page => page, :per_page => 50}})
+          if curesult.length == 0
+            stop = true
+          else
+            result += curesult
+            page += 1
+          end
+        end
 
         projects = result.map do |rp|
           Gitlab::GitlabProject.new(rp)
         end
-  
+
       rescue HttpExceptions::RequestException => _
         []
       end
