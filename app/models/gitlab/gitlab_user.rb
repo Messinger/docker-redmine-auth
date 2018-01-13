@@ -8,8 +8,9 @@ module Gitlab
     def self.login _username, _password
 
       begin
-        _u = GitlabHttp.new('session').create({:login => _username, :password => _password})
-        GitlabUser.new(_u)
+        # raise error if token invalid
+        GitlabHttp.new('user',{:accesstoken => _password}).retrieve
+        GitlabUser.new({:accesstoken => _password})
       rescue HttpExceptions::RequestException => e
         raise HttpExceptions::Unauthorized.new
       end
@@ -88,7 +89,7 @@ module Gitlab
 
       projects = []
       begin
-        _r = GitlabHttp.new('projects',authtoken).retrieve('visible')
+        _r = GitlabHttp.new('projects',authtoken).retrieve
 
         projects = _r.map do |rp|
           Gitlab::GitlabProject.new(rp)
