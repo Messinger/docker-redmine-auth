@@ -5,8 +5,8 @@ jobdocker:
   script:
     - export IMAGE_TAG=$(echo -en $CI_BUILD_REF_NAME | tr -c '[:alnum:]_.-' '-')
     - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
-    - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker push "$CI_REGISTRY_IMAGE:latest"
   tags:
     - shell
   only:
